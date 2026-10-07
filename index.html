@@ -17,14 +17,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle" hidden>
-  <button class="intro-skip" id="introSkip" type="button">Pular introdução ↗</button>
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle" tabindex="-1" hidden>
   <div class="intro-center">
     <p class="intro-eyebrow">Do primeiro corte à última cena</p>
     <h2 id="introTitle" class="intro-title"><span>MARCO</span><span>MELO<span class="intro-dot">.</span></span></h2>
     <div class="intro-cut" aria-hidden="true"></div>
     <p class="intro-caption">Ritmo. Identidade. Atenção.</p>
-    <button class="intro-sound" id="introSound" type="button"><span aria-hidden="true">♪</span> Entrar com som</button>
   </div>
   <div class="intro-bottom"><span>Preparando a próxima cena</span><div class="intro-progress" aria-hidden="true"><span></span></div><span>Editor de vídeo</span></div>
 </div>
@@ -54,8 +52,8 @@
   </div>
   <div class="hero-bottom">
     <div class="hero-copy">
-      <p class="lead">Transformo material bruto em vídeos que prendem atenção.</p>
-      <p class="muted">Edição para YouTube, conteúdos longos, Reels, Shorts e criadores de conteúdo.</p>
+      <p class="lead">Edição que valoriza seu conteúdo e mantém o público conectado.</p>
+      <p class="muted">Do vídeo longo aos cortes para redes: ritmo, clareza e acabamento alinhados à sua identidade.</p>
       <div class="ctas">
         <a class="btn btn-solid" href="#trabalhos">Ver trabalhos</a>
         <a class="btn btn-line" data-link="whatsapp" target="_blank" rel="noreferrer"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.5-8.5ZM12 22a10 10 0 0 1-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 22Zm5.5-7.5c-.3-.1-1.8-.9-2.1-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.6 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2.1 3.3 5.1 4.6l1.7.6c.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>Vamos conversar <i class="ar">↗</i></a>
@@ -79,11 +77,11 @@
 
 <section class="wrap sec" id="trabalhos" aria-labelledby="w-t">
   <h2 id="w-t" class="big"><span class="mask rv"><span>Trabalhos</span></span><span class="mask rv"><span>selecionados</span></span></h2>
-  <p class="work-intro muted">Uma seleção de vídeos que passaram pela minha edição.</p>
+  <p class="work-intro muted">Trabalhos reais. Veja como a edição ganha forma em cada projeto.</p>
   <div class="carousel" role="region" aria-roledescription="carrossel" aria-label="Trabalhos selecionados">
     <div class="grid" id="grid" tabindex="0" aria-label="Vídeos — use as setas para navegar"></div>
     <div class="carousel-controls">
-      <p class="small">Escolha um projeto e dê o play.</p>
+      <p class="small">Assista aos projetos completos.</p>
       <div class="carousel-nav">
         <button id="prevWork" class="carousel-arrow" aria-label="Vídeo anterior" aria-controls="grid">←</button>
         <span id="workCount" class="carousel-count" aria-live="polite" aria-atomic="true"></span>
@@ -96,37 +94,39 @@
 <section class="wrap sec" id="servicos" aria-labelledby="s-t">
   <h2 id="s-t" class="big"><span class="mask rv"><span>O que</span></span><span class="mask rv"><span>eu edito</span></span></h2>
   <ol class="services">
-    <li class="svc"><span class="n">01</span><h3>Vídeos longos</h3><p>Decupagem, ritmo, cortes, textos, desenho de som e estruturação do conteúdo.</p></li>
-    <li class="svc"><span class="n">02</span><h3>Vídeos curtos</h3><p>Reels, TikTok e Shorts com edição dinâmica voltada para conteúdos rápidos.</p></li>
-    <li class="svc"><span class="n">03</span><h3>Cortes para redes</h3><p>Transformação de conteúdos longos em cortes objetivos para redes sociais.</p></li>
-    <li class="svc"><span class="n">04</span><h3>Criatividade e IA</h3><p>Integração de recursos visuais e inteligência artificial quando o projeto pedir.</p></li>
+    <li class="svc"><span class="n">01</span><h3>Vídeos longos</h3><p>Estrutura, cortes precisos e desenho de som para conduzir a narrativa do início ao fim.</p></li>
+    <li class="svc"><span class="n">02</span><h3>Vídeos curtos</h3><p>Aberturas claras, legendas e ritmo pensados para Reels, TikTok e Shorts.</p></li>
+    <li class="svc"><span class="n">03</span><h3>Cortes para redes</h3><p>Seleção dos melhores momentos e adaptação para cada formato de publicação.</p></li>
+    <li class="svc"><span class="n">04</span><h3>Criatividade e IA</h3><p>Textos, efeitos e recursos de IA aplicados com intenção, respeitando o estilo do conteúdo.</p></li>
   </ol>
 </section>
 
 <section class="wrap sec" id="criadores" aria-labelledby="creators-title">
-  <p class="section-label">Criadores</p>
-  <h2 class="mid rv mask" id="creators-title"><span>Conteúdo com <em>identidade.</em></span></h2>
+  <p class="section-label">Canais no YouTube</p>
+  <h2 class="mid rv mask" id="creators-title"><span>Criadores com <em>voz própria.</em></span></h2>
   <div class="creators-grid">
-    <a class="creator-card rv fade" href="https://www.instagram.com/santana.xz/" target="_blank" rel="noreferrer" style="--delay:0ms">
-      <div class="creator-avatar"><span aria-hidden="true">S</span><img src="https://kinhoob.github.io/portfolio-thiago/assets/img/perfilsantana.jpg" alt="" loading="lazy"></div>
-      <div><h3>Santana</h3><p>@santana.xz</p></div>
-      <span class="creator-arrow" aria-hidden="true">↗</span>
-      <span class="creator-footer">Ver perfil no Instagram</span>
+    <a class="creator-card channel-card rv fade" href="https://www.youtube.com/@eusourex" target="_blank" rel="noreferrer" style="--delay:0ms">
+      <div class="creator-avatar"><svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.2-1.7-.9-2.4C21.2 3.7 20.2 3.7 19.8 3.6 16.5 3.3 12 3.3 12 3.3s-4.5 0-7.8.3c-.4.1-1.4.1-2.3 1C1.2 5.3 1 7 1 7S.7 9 .7 11v2c0 2 .3 4 .3 4s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1C6.4 20.6 12 20.7 12 20.7s4.5 0 7.8-.3c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.4.9-2.4s.3-2 .3-4v-2c0-2-.3-4-.3-4ZM9.7 15.4V8.5l6 3.5-6 3.4Z"/></svg></div>
+      <div><h3>Rex</h3><p>@eusourex</p></div><span class="creator-arrow" aria-hidden="true">↗</span>
+      <div class="channel-subs" data-channel="eusourex"><strong>219 mil</strong><span>inscritos no YouTube</span></div>
+      <span class="creator-footer">Conhecer o canal no YouTube</span>
     </a>
-    <a class="creator-card rv fade" href="https://www.instagram.com/euaspect/" target="_blank" rel="noreferrer" style="--delay:80ms">
-      <div class="creator-avatar"><span aria-hidden="true">A</span><img src="https://kinhoob.github.io/portfolio-thiago/assets/img/perfilaspect.jpg" alt="" loading="lazy"></div>
-      <div><h3>Aspect</h3><p>@euaspect</p></div>
-      <span class="creator-arrow" aria-hidden="true">↗</span>
-      <span class="creator-footer">Ver perfil no Instagram</span>
+    <a class="creator-card channel-card rv fade" href="https://www.youtube.com/@_manosan" target="_blank" rel="noreferrer" style="--delay:80ms">
+      <div class="creator-avatar"><svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.2-1.7-.9-2.4C21.2 3.7 20.2 3.7 19.8 3.6 16.5 3.3 12 3.3 12 3.3s-4.5 0-7.8.3c-.4.1-1.4.1-2.3 1C1.2 5.3 1 7 1 7S.7 9 .7 11v2c0 2 .3 4 .3 4s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1C6.4 20.6 12 20.7 12 20.7s4.5 0 7.8-.3c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.4.9-2.4s.3-2 .3-4v-2c0-2-.3-4-.3-4ZM9.7 15.4V8.5l6 3.5-6 3.4Z"/></svg></div>
+      <div><h3>Santana</h3><p>@_manosan</p></div><span class="creator-arrow" aria-hidden="true">↗</span>
+      <div class="channel-subs" data-channel="_manosan"><strong>17,8 mil</strong><span>inscritos no YouTube</span></div>
+      <span class="creator-footer">Conhecer o canal no YouTube</span>
     </a>
-    <a class="creator-card rv fade" href="https://www.instagram.com/odemetruu/" target="_blank" rel="noreferrer" style="--delay:160ms">
-      <div class="creator-avatar"><span aria-hidden="true">O</span><img src="https://kinhoob.github.io/portfolio-thiago/assets/img/perfilodemetro.jpg" alt="" loading="lazy"></div>
-      <div><h3>Odemetro</h3><p>@odemetruu</p></div>
-      <span class="creator-arrow" aria-hidden="true">↗</span>
-      <span class="creator-footer">Ver perfil no Instagram</span>
+    <a class="creator-card channel-card rv fade" href="https://www.youtube.com/@CasaClutch" target="_blank" rel="noreferrer" style="--delay:160ms">
+      <div class="creator-avatar"><svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7s-.2-1.7-.9-2.4C21.2 3.7 20.2 3.7 19.8 3.6 16.5 3.3 12 3.3 12 3.3s-4.5 0-7.8.3c-.4.1-1.4.1-2.3 1C1.2 5.3 1 7 1 7S.7 9 .7 11v2c0 2 .3 4 .3 4s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1C6.4 20.6 12 20.7 12 20.7s4.5 0 7.8-.3c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.4.9-2.4s.3-2 .3-4v-2c0-2-.3-4-.3-4ZM9.7 15.4V8.5l6 3.5-6 3.4Z"/></svg></div>
+      <div><h3>Casa Clutch</h3><p>@CasaClutch</p></div><span class="creator-arrow" aria-hidden="true">↗</span>
+      <div class="channel-subs" data-channel="CasaClutch"><strong>16,2 mil</strong><span>inscritos no YouTube</span></div>
+      <span class="creator-footer">Conhecer o canal no YouTube</span>
     </a>
   </div>
+  <p class="channel-note small">Inscritos informados em outubro de 2026.</p>
 </section>
+
 <section class="wrap sec" id="habilidades" aria-labelledby="skills-title">
   <p class="section-label">Ferramentas e habilidades</p>
   <h2 class="mid rv mask" id="skills-title"><span>O que dá vida <em>ao vídeo.</em></span></h2>
@@ -157,35 +157,35 @@
 <section class="wrap sec about" id="sobre" aria-labelledby="a-t">
   <h2 id="a-t" class="mid"><span class="mask rv"><span>Sobre</span></span></h2>
   <div class="about-txt rv fade">
-    <p class="lead">Sou Marco, editor de vídeo focado em conteúdos digitais.</p>
-    <p>Trabalho com vídeos longos e curtos, passando por decupagem, cortes, textos, zooms, efeitos sonoros e outros elementos de pós-produção.</p>
-    <p>Entrei profissionalmente na área através de trabalhos reais e indicações e continuo desenvolvendo meu estilo a cada projeto.</p>
-    <p>Também exploro novas ferramentas e inteligência artificial aplicadas à edição, sempre buscando melhorar o processo criativo e a qualidade das entregas.</p>
-    <p>Meu objetivo é simples: transformar material bruto em um vídeo que seja agradável de assistir e respeite a identidade de quem está criando o conteúdo.</p>
+    <p class="lead">Sou Marco Melo. Transformo ideias e gravações em conteúdo com direção, ritmo e identidade.</p>
+    <p>Cada edição começa pelo objetivo do vídeo. Organizo o material e trabalho cortes, textos e som para construir uma experiência clara e envolvente.</p>
+    <p>Minha experiência vem de projetos reais e indicações. Trabalho com atenção às referências e à linguagem de cada criador.</p>
+    <p>Uso ferramentas e recursos visuais para apoiar a narrativa e dar consistência ao acabamento.</p>
+    <p>Você acompanha a edição, revisa a primeira versão e aprova o resultado antes da entrega final.</p>
   </div>
 </section>
 
 <section class="wrap sec" aria-labelledby="p-t">
   <h2 id="p-t" class="mid"><span class="mask rv"><span>Processo</span></span></h2>
   <ol class="steps">
-    <li class="rv fade"><span class="n blue">01</span><h3>Material</h3><p>Você envia os arquivos, referências e explica o objetivo do conteúdo.</p></li>
-    <li class="rv fade"><span class="n blue">02</span><h3>Edição</h3><p>Faço a decupagem e construo a edição.</p></li>
-    <li class="rv fade"><span class="n blue">03</span><h3>Revisão</h3><p>Envio a primeira versão e fazemos os ajustes necessários.</p></li>
-    <li class="rv fade"><span class="n blue">04</span><h3>Entrega</h3><p>Arquivo aprovado e pronto para publicação.</p></li>
+    <li class="rv fade"><span class="n blue">01</span><h3>Material</h3><p>Alinhamos objetivo, formato e referências antes de começar a edição.</p></li>
+    <li class="rv fade"><span class="n blue">02</span><h3>Edição</h3><p>Organizo o material e construo a narrativa com cortes, textos e som.</p></li>
+    <li class="rv fade"><span class="n blue">03</span><h3>Revisão</h3><p>Você recebe a primeira versão para revisar; os ajustes seguem o que alinhamos.</p></li>
+    <li class="rv fade"><span class="n blue">04</span><h3>Entrega</h3><p>Após a aprovação, entrego o arquivo no formato combinado para publicação.</p></li>
   </ol>
 </section>
 
 <section class="cta" id="contato" aria-labelledby="c-t">
   <div class="wrap cta-in">
     <h2 id="c-t" class="cta-title"><span class="mask rv"><span>Tem um projeto</span></span><span class="mask rv"><span>em mente?</span></span></h2>
-    <div class="cta-row"><a class="btn btn-white" data-link="whatsapp" target="_blank" rel="noreferrer"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.5-8.5ZM12 22a10 10 0 0 1-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 22Zm5.5-7.5c-.3-.1-1.8-.9-2.1-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.6 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2.1 3.3 5.1 4.6l1.7.6c.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>Chamar no WhatsApp <i class="ar">↗</i></a><p>Vamos conversar.</p></div>
+    <div class="cta-row"><a class="btn btn-white" data-link="whatsapp" target="_blank" rel="noreferrer"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.5-8.5ZM12 22a10 10 0 0 1-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 22Zm5.5-7.5c-.3-.1-1.8-.9-2.1-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.6 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2.1 3.3 5.1 4.6l1.7.6c.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>Chamar no WhatsApp <i class="ar">↗</i></a><p>Conte seu objetivo. Vamos definir a edição que seu projeto precisa.</p></div>
   </div>
 </section>
 </main>
 
 <footer class="wrap foot">
   <p><b>Marco Melo</b><br>Editor de vídeo</p>
-  <ul><li><a class="ul" data-link="instagram" target="_blank" rel="noreferrer">Instagram</a></li><li><a class="ul" data-link="whatsapp" target="_blank" rel="noreferrer"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.5-8.5ZM12 22a10 10 0 0 1-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 22Zm5.5-7.5c-.3-.1-1.8-.9-2.1-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.6 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2.1 3.3 5.1 4.6l1.7.6c.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>WhatsApp</a></li><li><a class="ul" data-link="email">E-mail</a></li></ul>
+  <ul><li><a class="ul" data-link="instagram" target="_blank" rel="noreferrer"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>Instagram</a></li><li><a class="ul" data-link="whatsapp" target="_blank" rel="noreferrer"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 12 24c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.5-8.5ZM12 22a10 10 0 0 1-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 22Zm5.5-7.5c-.3-.1-1.8-.9-2.1-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.6 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2.1 3.3 5.1 4.6l1.7.6c.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>WhatsApp</a></li><li><a class="ul" data-link="email">E-mail</a></li></ul>
   <p class="r">Recife, Brasil<br>2026</p>
 </footer>
 
