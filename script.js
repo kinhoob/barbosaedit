@@ -1,3 +1,19 @@
+// Tema claro e escuro com preferência salva.
+const themeToggle = document.querySelector("#themeToggle");
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const light = theme === "light";
+  themeToggle.setAttribute("aria-pressed", String(light));
+  themeToggle.setAttribute("aria-label", light ? "Ativar modo escuro" : "Ativar modo claro");
+  themeToggle.firstElementChild.textContent = light ? "☾" : "☀";
+}
+try { applyTheme(localStorage.getItem("portfolio-theme") === "light" ? "light" : "dark"); } catch { applyTheme("dark"); }
+themeToggle.addEventListener("click", () => {
+  const theme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  applyTheme(theme);
+  try { localStorage.setItem("portfolio-theme", theme); } catch {}
+});
+
 /* =====================================================
    ✏️ CONFIGURAÇÃO — edite só esta parte
    Em "video"/"showreel" cole o link normal do YouTube, Vimeo
@@ -154,3 +170,13 @@ if ("IntersectionObserver" in window && !reducedMotion) {
 const hf = $("#heroFrame");
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
   addEventListener("scroll", () => { if (scrollY < innerHeight) hf.style.transform = `translateY(${-scrollY * 0.07}px)`; }, { passive: true });
+// Capas de reserva quando a resolução máxima não está disponível.
+document.querySelectorAll(".creator-avatar img").forEach((image) => {
+  image.addEventListener("error", () => { image.hidden = true; });
+});
+document.querySelectorAll("#heroImg, #srImg, .thumb img").forEach((image) => {
+  image.addEventListener("error", () => {
+    if (image.src.includes("/maxresdefault.jpg")) image.src = image.src.replace("/maxresdefault.jpg", "/hqdefault.jpg");
+    else if (!image.src.startsWith("data:")) image.src = ph("Edição de vídeo · Marco Melo");
+  });
+});
