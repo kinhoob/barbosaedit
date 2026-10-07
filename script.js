@@ -48,27 +48,67 @@ document.querySelectorAll("[data-link]").forEach((a) => {
 
 // hero + showreel
 const first = CONFIG.projects[0];
-$("#heroImg").src = thumbOf(first) || ph("PLACEHOLDER — thumbnail do hero");
+$("#heroImg").src = thumbOf(first) || ph("Cena de um projeto");
 const sr = CONFIG.showreel;
 $(".showreel").hidden = !sr.video;
-$("#srImg").src = thumbOf(sr) || ph("PLACEHOLDER — defina o showreel em script.js");
+$("#srImg").src = thumbOf(sr) || ph("Seleção de vídeos");
 $("#srPlay").addEventListener("click", () => {
   if (!sr.video) return alert("Defina o link do showreel em script.js (CONFIG.showreel.video).");
-  $("#srBox").innerHTML = iframe(toEmbed(sr.video, true), "Showreel 2026");
+  $("#srBox").innerHTML = iframe(toEmbed(sr.video, true), "Seleção de vídeos 2026");
 });
 
 // grid de projetos
 const grid = $("#grid");
 CONFIG.projects.forEach((p, i) => {
   const card = document.createElement("article");
-  card.className = "card";
+  card.className = "card rv video-reveal";
+  card.setAttribute("role", "group");
+  card.setAttribute("aria-roledescription", "slide");
+  card.setAttribute("aria-label", `${i + 1} de ${CONFIG.projects.length}: ${p.title}`);
   card.innerHTML = `<button class="card-btn" data-i="${i}" aria-label="Ver projeto ${p.title}">
-    <div class="thumb ${p.vertical ? "v" : ""} rv clip"><img src="${thumbOf(p) || ph("PLACEHOLDER — " + p.title)}" alt="Thumbnail do projeto ${p.title}" loading="lazy">
-      <div class="ov"><span>${p.category}</span><span class="blue">Ver projeto ↗</span></div></div>
+    <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa — " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
+      <span class="card-play" aria-hidden="true">▶</span><div class="ov"><span>${p.category}</span><span>Assistir ao vídeo ↗</span></div></div>
     <div class="meta"><h3>${p.title}</h3><span>${p.year}</span></div>
     <p class="muted">${p.category} — ${p.editType}</p></button>`;
   grid.appendChild(card);
 });
+
+// Carrossel: rolagem nativa por toque, botões e teclado.
+const prevWork = $("#prevWork"), nextWork = $("#nextWork"), workCount = $("#workCount");
+const cards = [...grid.children];
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function currentWork() {
+  const left = grid.getBoundingClientRect().left;
+  return cards.reduce((best, card, i) =>
+    Math.abs(card.getBoundingClientRect().left - left) <
+    Math.abs(cards[best].getBoundingClientRect().left - left) ? i : best, 0);
+}
+function updateCarousel() {
+  const index = currentWork();
+  workCount.textContent = cards.length ? `${String(index + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}` : "Nenhum vídeo";
+  prevWork.disabled = grid.scrollLeft <= 2;
+  nextWork.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 2;
+}
+function moveWork(direction) {
+  const index = Math.max(0, Math.min(cards.length - 1, currentWork() + direction));
+  if (!cards[index]) return;
+  grid.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: reducedMotion ? "instant" : "smooth" });
+}
+prevWork.addEventListener("click", () => moveWork(-1));
+nextWork.addEventListener("click", () => moveWork(1));
+grid.addEventListener("keydown", (event) => {
+  if (event.target !== grid) return;
+  if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+    event.preventDefault(); moveWork(event.key === "ArrowRight" ? 1 : -1);
+  }
+});
+let carouselFrame;
+grid.addEventListener("scroll", () => {
+  cancelAnimationFrame(carouselFrame);
+  carouselFrame = requestAnimationFrame(updateCarousel);
+}, { passive: true });
+addEventListener("resize", updateCarousel);
+updateCarousel();
 
 // modal
 const modal = $("#modal");
@@ -95,9 +135,20 @@ onScroll(); addEventListener("scroll", onScroll, { passive: true });
 mb.addEventListener("click", () => { const o = links.classList.toggle("open"); mb.setAttribute("aria-expanded", o); mb.textContent = o ? "Fechar" : "Menu"; nav.classList.toggle("solid", o || scrollY > 40); });
 links.addEventListener("click", (e) => { if (e.target.closest("a")) { links.classList.remove("open"); mb.setAttribute("aria-expanded", false); mb.textContent = "Menu"; } });
 
-// reveals ao rolar (IntersectionObserver)
-const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -10% 0px" });
-document.querySelectorAll(".rv, .svc").forEach((el, i) => io.observe(el));
+// Entrada progressiva; o conteúdo permanece visível se as animações não iniciarem.
+const revealElements = document.querySelectorAll(".rv, .svc");
+if ("IntersectionObserver" in window && !reducedMotion) {
+  const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in");
+      io.unobserve(entry.target);
+    }
+  }), { threshold: 0.12 });
+  revealElements.forEach((element) => io.observe(element));
+  document.documentElement.classList.add("motion-ready");
+} else {
+  revealElements.forEach((element) => element.classList.add("in"));
+}
 
 // hero: parallax leve
 const hf = $("#heroFrame");
