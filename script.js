@@ -6,27 +6,19 @@
    automaticamente; senão use um arquivo seu (ex: "img/casa.jpg").
    ===================================================== */
 const CONFIG = {
-  whatsapp: "https://wa.me/5581900000000",   // ← seu WhatsApp
-  instagram: "https://instagram.com/seuusuario", // ← seu Instagram
-  email: "mailto:seuemail@exemplo.com",      // ← seu e-mail
+  whatsapp: "https://wa.me/5581983656583",   // ← seu WhatsApp
+  instagram: "https://www.instagram.com/_barbosadmelo/", // ← seu Instagram
+  email: "",      // ← seu e-mail
   showreel: { video: "", thumbnail: "" },    // ← link do showreel
   projects: [
-    { title: "Casa Clutch", client: "Casa Clutch", category: "Long Form · YouTube", year: "2026", editType: "Vídeo longo",
-      video: "", thumbnail: "", vertical: false,
-      description: "Edição de vídeo longo para YouTube. (✏️ troque pela descrição real)",
-      services: ["Decupagem", "Cortes", "Textos", "Sound Design", "Zooms", "Elementos visuais"] },
-    { title: "Social Content", client: "✏️ cliente", category: "Reels · Short Form", year: "2026", editType: "Reels e Shorts",
-      video: "", thumbnail: "", vertical: true,
-      description: "Edição dinâmica para conteúdos rápidos. (✏️ troque pela descrição real)",
-      services: ["Cortes", "Textos na tela", "Zooms", "Efeitos sonoros", "Ritmo"] },
-    { title: "Content Cuts", client: "✏️ cliente", category: "Cortes · Social Media", year: "2026", editType: "Cortes",
-      video: "", thumbnail: "", vertical: true,
-      description: "Cortes objetivos a partir de conteúdos longos. (✏️ troque pela descrição real)",
-      services: ["Decupagem", "Cortes", "Legendas", "Ritmo"] },
-    { title: "Creative / AI", client: "✏️ cliente", category: "Criativo · IA", year: "2026", editType: "Efeitos e IA",
-      video: "", thumbnail: "", vertical: false,
-      description: "Recursos visuais e IA aplicados à edição. (✏️ troque pela descrição real)",
-      services: ["Efeitos com IA", "Recursos visuais", "Edição"] },
+    { title: "Casa Clutch", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
+      video: "https://youtu.be/lXB8Dn48W6s", thumbnail: "", vertical: false,
+      description: "Vídeo editado para Casa Clutch.",
+      services: ["Edição de vídeo"] },
+    { title: "Santana", client: "Santana", category: "YouTube", year: "2026", editType: "Edição de vídeo",
+      video: "https://youtu.be/S9YK_6tsb9M", thumbnail: "", vertical: false,
+      description: "Vídeo editado para Santana.",
+      services: ["Edição de vídeo"] },
   ],
 };
 
@@ -48,12 +40,17 @@ const ph = (t) => "data:image/svg+xml," + encodeURIComponent(`<svg xmlns='http:/
 const iframe = (src, title, vertical) => `<iframe src="${src}" title="${title}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 
 // links de contato
-document.querySelectorAll("[data-link]").forEach((a) => (a.href = CONFIG[a.dataset.link]));
+document.querySelectorAll("[data-link]").forEach((a) => {
+  const url = CONFIG[a.dataset.link];
+  if (url) a.href = url;
+  else (a.closest("li") || a).hidden = true;
+});
 
 // hero + showreel
 const first = CONFIG.projects[0];
 $("#heroImg").src = thumbOf(first) || ph("PLACEHOLDER — thumbnail do hero");
 const sr = CONFIG.showreel;
+$(".showreel").hidden = !sr.video;
 $("#srImg").src = thumbOf(sr) || ph("PLACEHOLDER — defina o showreel em script.js");
 $("#srPlay").addEventListener("click", () => {
   if (!sr.video) return alert("Defina o link do showreel em script.js (CONFIG.showreel.video).");
@@ -93,7 +90,7 @@ grid.addEventListener("click", (e) => { const b = e.target.closest(".card-btn");
 
 // navbar + menu mobile
 const nav = $("#nav"), links = $("#links"), mb = $("#menuBtn");
-const onScroll = () => nav.classList.toggle("solid", scrollY > 40);
+const onScroll = () => nav.classList.toggle("solid", scrollY > 40 || links.classList.contains("open"));
 onScroll(); addEventListener("scroll", onScroll, { passive: true });
 mb.addEventListener("click", () => { const o = links.classList.toggle("open"); mb.setAttribute("aria-expanded", o); mb.textContent = o ? "Fechar" : "Menu"; nav.classList.toggle("solid", o || scrollY > 40); });
 links.addEventListener("click", (e) => { if (e.target.closest("a")) { links.classList.remove("open"); mb.setAttribute("aria-expanded", false); mb.textContent = "Menu"; } });
