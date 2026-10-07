@@ -27,10 +27,6 @@ const CONFIG = {
   email: "",      // ← seu e-mail
   showreel: { video: "", thumbnail: "" },    // ← link do showreel
   projects: [
-    { title: "Edição para YouTube", client: "Projeto selecionado", category: "YouTube", year: "2026", editType: "Edição de vídeo",
-      video: "https://youtu.be/ANrPaqlfLFg", thumbnail: "", vertical: false,
-      description: "Trabalho de edição para YouTube. Assista ao vídeo completo para conhecer o resultado.",
-      services: ["Edição de vídeo"] },
     { title: "Casa Clutch", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
       video: "https://youtu.be/lXB8Dn48W6s", thumbnail: "", vertical: false,
       description: "Vídeo editado para Casa Clutch.",
@@ -38,6 +34,10 @@ const CONFIG = {
     { title: "Santana", client: "Santana", category: "YouTube", year: "2026", editType: "Edição de vídeo",
       video: "https://youtu.be/S9YK_6tsb9M", thumbnail: "", vertical: false,
       description: "Vídeo editado para Santana.",
+      services: ["Edição de vídeo"] },
+    { title: "Rex", client: "Rex", category: "YouTube", year: "2026", editType: "Edição de vídeo",
+      video: "https://youtu.be/ANrPaqlfLFg", thumbnail: "", vertical: false,
+      description: "Vídeo editado para Rex. Assista ao vídeo completo para conhecer o resultado.",
       services: ["Edição de vídeo"] },
   ],
 };
