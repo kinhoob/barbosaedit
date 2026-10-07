@@ -27,6 +27,10 @@ const CONFIG = {
   email: "",      // ← seu e-mail
   showreel: { video: "", thumbnail: "" },    // ← link do showreel
   projects: [
+    { title: "Edição para YouTube", client: "Projeto selecionado", category: "YouTube", year: "2026", editType: "Edição de vídeo",
+      video: "https://youtu.be/ANrPaqlfLFg", thumbnail: "", vertical: false,
+      description: "Trabalho de edição para YouTube. Assista ao vídeo completo para conhecer o resultado.",
+      services: ["Edição de vídeo"] },
     { title: "Casa Clutch", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
       video: "https://youtu.be/lXB8Dn48W6s", thumbnail: "", vertical: false,
       description: "Vídeo editado para Casa Clutch.",
@@ -181,82 +185,35 @@ document.querySelectorAll("#heroImg, #srImg, .thumb img").forEach((image) => {
   });
 });
 
-// Introdução curta; aparece uma vez por sessão e nunca impede acesso ao site.
+// Vinheta rápida e automática em cada entrada.
 (() => {
   const intro = document.querySelector("#intro");
-  const skip = document.querySelector("#introSkip");
-  const sound = document.querySelector("#introSound");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  try { if (sessionStorage.getItem("portfolio-intro-seen")) return; } catch {}
-  const previousFocus = document.activeElement;
-  const previousOverflow = document.body.style.overflow;
   const background = [...document.querySelectorAll("body > header, body > main, body > footer, body > dialog, body > .skip")];
   const states = background.map(element => element.inert);
-  let finished = false, finishing = false, audioContext;
-  let autoTimer, exitTimer;
+  const overflow = document.body.style.overflow;
+  let finished = false;
   function finish() {
     if (finished) return;
     finished = true;
-    clearTimeout(autoTimer); clearTimeout(exitTimer);
     intro.hidden = true;
-    intro.classList.remove("intro-leaving");
-    document.body.style.overflow = previousOverflow;
-    background.forEach((element, index) => { element.inert = states[index]; });
-    try { sessionStorage.setItem("portfolio-intro-seen", "1"); } catch {}
-    if (previousFocus && previousFocus !== document.body) previousFocus.focus({preventScroll:true});
-    else document.querySelector(".logo").focus({preventScroll:true});
-    document.removeEventListener("keydown", onIntroKey);
-    if (audioContext) setTimeout(() => audioContext.close().catch(() => {}), 600);
+    background.forEach((element, i) => { element.inert = states[i]; });
+    document.body.style.overflow = overflow;
+    document.removeEventListener("keydown", onKey);
+    document.querySelector(".logo").focus({preventScroll:true});
   }
-  function leave(immediate = false) {
-    if (finished) return;
-    if (immediate) return finish();
-    if (finishing) return;
-    finishing = true;
-    clearTimeout(autoTimer);
-    intro.classList.add("intro-leaving");
-    exitTimer = setTimeout(finish, reduce ? 0 : 650);
-  }
-  async function playIntroSound() {
-    const AudioAPI = window.AudioContext || window.webkitAudioContext;
-    if (!AudioAPI) return;
-    try {
-      audioContext = new AudioAPI();
-      await audioContext.resume();
-      if (finished) { await audioContext.close(); return; }
-      const now = audioContext.currentTime;
-      const master = audioContext.createGain();
-      master.gain.value = 0.12; master.connect(audioContext.destination);
-      [220, 330, 440].forEach((frequency, index) => {
-        const oscillator = audioContext.createOscillator(), envelope = audioContext.createGain();
-        const start = now + index * 0.065;
-        oscillator.type = "sine"; oscillator.frequency.setValueAtTime(frequency, start);
-        oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.2, start + 0.25);
-        envelope.gain.setValueAtTime(0, start);
-        envelope.gain.linearRampToValueAtTime(0.3, start + 0.015);
-        envelope.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
-        oscillator.connect(envelope); envelope.connect(master);
-        oscillator.start(start); oscillator.stop(start + 0.5);
-      });
-    } catch { /* A introdução continua mesmo quando áudio não está disponível. */ }
-  }
-  function onIntroKey(event) {
-    if (event.key === "Escape") { event.preventDefault(); leave(true); }
-    if (event.key === "Tab") {
-      if (event.shiftKey && document.activeElement === skip) { event.preventDefault(); sound.focus(); }
-      else if (!event.shiftKey && document.activeElement === sound) { event.preventDefault(); skip.focus(); }
-    }
+  function onKey(event) {
+    if (event.key === "Escape") finish();
+    if (event.key === "Tab" && !finished) event.preventDefault();
   }
   intro.hidden = false;
-  document.body.style.overflow = "hidden";
   background.forEach(element => { element.inert = true; });
-  skip.focus({preventScroll:true});
-  document.addEventListener("keydown", onIntroKey);
-  skip.addEventListener("click", () => leave(true));
-  sound.addEventListener("click", () => {
-    sound.disabled = true;
-    void playIntroSound();
-    leave();
-  });
-  autoTimer = setTimeout(() => leave(), reduce ? 1400 : 3200);
+  document.body.style.overflow = "hidden";
+  intro.focus({preventScroll:true});
+  document.addEventListener("keydown", onKey);
+  setTimeout(() => {
+    if (finished) return;
+    intro.classList.add("intro-leaving");
+    setTimeout(finish, reduce ? 0 : 350);
+  }, reduce ? 500 : 1100);
 })();
