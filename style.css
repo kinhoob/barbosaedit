@@ -440,3 +440,17 @@ dialog{border-radius:16px;border-color:var(--line)}
  #verticalGrid .instagram-preview{height:380px}
 }
 @media(prefers-reduced-motion:reduce){#verticalGrid{scroll-behavior:auto}}
+
+/* Identidade e prévia, sem informações repetidas ao redor do Reel. */
+#verticalGrid .vertical-card{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.reel-author{display:flex;align-items:center;min-height:48px;padding:.75rem 1rem;font-size:.8rem;font-weight:500;color:var(--fg)}
+.reel-author:hover{color:var(--blue2)}
+#verticalGrid .instagram-preview{border:0;border-radius:0}
+#perfis-instagram .creator-footer{font-size:.75rem;color:var(--mute)}
+/* Barras discretas: preservam a indicação de rolagem sem pesar no layout. */
+:root{--scroll-thumb:rgba(59,130,246,.24)}
+html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent}
+::-webkit-scrollbar{width:4px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:rgba(59,130,246,.48)}
