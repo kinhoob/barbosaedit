@@ -194,9 +194,8 @@ const verticalProjects = CONFIG.verticalProjects.filter(p =>
   p.title && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video) || isInstagramReel(p.video)));
 const verticalGrid = $("#verticalGrid");
 $("#verticais").hidden = !verticalProjects.length;
-// Incorporação oficial carregada somente após interação. Uma prévia ativa por vez.
+// Prévia oficial carregada automaticamente ao se aproximar da área visível.
 let instagramScriptPromise;
-let activeInstagramPreview = null;
 function loadInstagramEmbeds() {
   if (window.instgrm?.Embeds) return Promise.resolve();
   if (!instagramScriptPromise) instagramScriptPromise = new Promise((resolve, reject) => {
@@ -221,6 +220,13 @@ function mountInstagramPreview(container, project) {
     blockquote.replaceChildren(fallback);
   });
 }
+const instagramObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        mountInstagramPreview(entry.target, entry.target.instagramProject);
+        instagramObserver.unobserve(entry.target);
+      }
+    }), { rootMargin: "120px" }) : null;
 verticalProjects.forEach((p, index) => {
   const instagram = isInstagramReel(p.video);
   const article = document.createElement("article");
@@ -271,31 +277,12 @@ verticalProjects.forEach((p, index) => {
     const preview = document.createElement("div");
     preview.className = "instagram-preview";
     preview.setAttribute("aria-label", `Prévia do Reel de ${creator}`);
-    const launch = document.createElement("button");
-    launch.type = "button"; launch.className = "reel-launch";
-    launch.setAttribute("aria-label", `Carregar prévia do Reel de ${creator}`);
-    if (safeMediaUrl(p.thumbnail)) {
-      const image = document.createElement("img");
-      image.src = safeMediaUrl(p.thumbnail); image.alt = `Miniatura do Reel de ${creator}`;
-      image.loading = "lazy"; image.width = 360; image.height = 640; launch.append(image);
-    }
-    const action = document.createElement("span");
-    action.className = "reel-launch-action"; action.textContent = "▶ Carregar prévia";
-    launch.append(action);
-    function resetPreview() {
-      preview.replaceChildren(launch); delete preview.dataset.mounted;
-    }
-    launch.addEventListener("click", () => {
-      activeInstagramPreview?.reset();
-      preview.replaceChildren();
-      mountInstagramPreview(preview, p);
-      link.focus({preventScroll:true});
-      activeInstagramPreview = { reset: resetPreview };
-    });
-    resetPreview();
+    preview.instagramProject = p;
     format.textContent = p.platform || "Vídeo vertical";
     article.append(author, preview, format, description, link);
     verticalGrid.append(article);
+    if (instagramObserver) instagramObserver.observe(preview);
+    else mountInstagramPreview(preview, p);
   } else {
     article.append(media, title, format, description, link);
     verticalGrid.append(article);
