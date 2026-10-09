@@ -271,7 +271,13 @@ verticalProjects.forEach((p, index) => {
     preview.className = "instagram-preview";
     preview.setAttribute("aria-label", `Prévia de ${p.title} no Instagram`);
     preview.instagramProject = p;
-    article.append(preview, title, format, description, link);
+    const author = document.createElement("a");
+    author.className = "reel-author";
+    author.href = new URL(p.client.replace(/^@/, "") + "/", "https://www.instagram.com/").href;
+    author.target = "_blank"; author.rel = "noreferrer";
+    author.textContent = p.client;
+    author.setAttribute("aria-label", `Perfil de ${p.client} no Instagram (nova aba)`);
+    article.append(author, preview);
     verticalGrid.append(article);
     if (instagramObserver) instagramObserver.observe(preview);
     else mountInstagramPreview(preview, p);
