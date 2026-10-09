@@ -281,6 +281,37 @@ verticalProjects.forEach((p, index) => {
   }
 });
 
+// Carrossel compacto de Reels com rolagem nativa e teclado.
+const reelCards = [...verticalGrid.children];
+const prevReel = $("#prevReel"), nextReel = $("#nextReel"), reelCount = $("#reelCount");
+function currentReel() {
+  const left = verticalGrid.getBoundingClientRect().left;
+  return reelCards.reduce((best, card, i) =>
+    Math.abs(card.getBoundingClientRect().left - left) < Math.abs(reelCards[best].getBoundingClientRect().left - left) ? i : best, 0);
+}
+function updateReels() {
+  reelCount.textContent = reelCards.length ? `${String(currentReel() + 1).padStart(2, "0")} / ${String(reelCards.length).padStart(2, "0")}` : "";
+  prevReel.disabled = verticalGrid.scrollLeft <= 2;
+  nextReel.disabled = verticalGrid.scrollLeft >= verticalGrid.scrollWidth - verticalGrid.clientWidth - 2;
+}
+function moveReel(direction) {
+  const index = Math.max(0, Math.min(reelCards.length - 1, currentReel() + direction));
+  if (reelCards[index]) verticalGrid.scrollTo({left: reelCards[index].offsetLeft - reelCards[0].offsetLeft, behavior: reducedMotion ? "instant" : "smooth"});
+}
+prevReel.addEventListener("click", () => moveReel(-1));
+nextReel.addEventListener("click", () => moveReel(1));
+verticalGrid.addEventListener("keydown", event => {
+  if (event.target === verticalGrid && ["ArrowLeft", "ArrowRight"].includes(event.key)) {
+    event.preventDefault(); moveReel(event.key === "ArrowRight" ? 1 : -1);
+  }
+});
+let reelFrame;
+verticalGrid.addEventListener("scroll", () => {
+  cancelAnimationFrame(reelFrame); reelFrame = requestAnimationFrame(updateReels);
+}, {passive:true});
+addEventListener("resize", updateReels);
+updateReels();
+
 // Galeria acessível: miniaturas primeiro, imagem maior após interação.
 const galleryItems = CONFIG.thumbnails.filter(item => safeMediaUrl(item.src) && item.alt && item.title);
 const gallery = $("#thumbnailModal"), galleryImage = $("#galleryImage"), galleryStrip = $("#galleryStrip");
