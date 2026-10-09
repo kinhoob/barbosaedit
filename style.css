@@ -426,3 +426,17 @@ dialog{border-radius:16px;border-color:var(--line)}
 .instagram-preview blockquote{padding:1rem}
 .instagram-preview blockquote a{display:inline-flex;align-items:center;min-height:44px;color:var(--blue2)}
 @media(max-width:600px){.vertical-grid{grid-template-columns:1fr}.instagram-preview{min-height:520px}}
+
+/* Reels compactos em carrossel; a prévia mantém espaço para interação */
+#verticalGrid{position:relative;display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding:1rem 0 1.5rem;scrollbar-width:thin;scrollbar-color:var(--blue) var(--elev)}
+#verticalGrid .vertical-card{flex:0 0 320px;min-width:0;scroll-snap-align:start}
+#verticalGrid .instagram-preview{height:420px;min-height:0;overflow:auto}
+#verticalGrid .instagram-preview iframe{display:block}
+#verticalGrid .vertical-card h3{font-size:1rem;margin-top:.75rem}
+#verticalGrid .vertical-card p{font-size:.8rem;line-height:1.5}
+@media(max-width:480px){
+ #verticalGrid{gap:1rem}
+ #verticalGrid .vertical-card{flex-basis:min(320px,90%)}
+ #verticalGrid .instagram-preview{height:380px}
+}
+@media(prefers-reduced-motion:reduce){#verticalGrid{scroll-behavior:auto}}
