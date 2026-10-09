@@ -419,3 +419,10 @@ dialog{border-radius:16px;border-color:var(--line)}
 .reel-cover-number{font-size:clamp(4rem,8vw,8rem);font-weight:600;letter-spacing:-.07em;line-height:1;color:var(--blue2);align-self:center}
 .reel-cover-action{font-size:.8rem;border-top:1px solid var(--line);padding-top:1rem;width:100%}
 @media(max-width:480px){.reel-cover-number{font-size:6rem}.reel-cover{max-height:none}}
+
+/* Prévia oficial do Instagram, com link externo sempre disponível */
+.instagram-preview{min-height:560px;min-width:0;max-width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.instagram-preview .instagram-media,.instagram-preview iframe{width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;border:0!important}
+.instagram-preview blockquote{padding:1rem}
+.instagram-preview blockquote a{display:inline-flex;align-items:center;min-height:44px;color:var(--blue2)}
+@media(max-width:600px){.vertical-grid{grid-template-columns:1fr}.instagram-preview{min-height:520px}}
