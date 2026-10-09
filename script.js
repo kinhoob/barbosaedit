@@ -30,7 +30,28 @@ const CONFIG = {
   // verticalProjects: { title, client, platform: "Shorts"/"Reels"/"TikTok",
   // video: URL real, thumbnail: arquivo real (obrigatório fora do YouTube),
   // description, services: ["Edição de vídeo"], year }
-  verticalProjects: [],
+  verticalProjects: [
+    { title: "Reel 01", client: "", platform: "Instagram Reels",
+      video: "https://www.instagram.com/reel/Db1qw8qRnNk/", thumbnail: "",
+      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      services: ["Edição de vídeo"] },
+    { title: "Reel 02", client: "", platform: "Instagram Reels",
+      video: "https://www.instagram.com/reel/Dczj-TvMhn4/", thumbnail: "",
+      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      services: ["Edição de vídeo"] },
+    { title: "Reel 03", client: "", platform: "Instagram Reels",
+      video: "https://www.instagram.com/reel/DdPuYkUS9FW/", thumbnail: "",
+      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      services: ["Edição de vídeo"] },
+    { title: "Reel 04", client: "", platform: "Instagram Reels",
+      video: "https://www.instagram.com/reel/Dcy5_BAp-Ic/", thumbnail: "",
+      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      services: ["Edição de vídeo"] },
+    { title: "Reel 05", client: "", platform: "Instagram Reels",
+      video: "https://www.instagram.com/reel/Dc_na-RpHoE/", thumbnail: "",
+      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      services: ["Edição de vídeo"] },
+  ],
   // thumbnails: { src: caminho do arquivo autoral, alt: descrição da capa, title }
   // Adicione os arquivos ao repositório e informe seus caminhos relativos em src.
   // As capas automáticas do YouTube não são apresentadas como criações autorais.
@@ -165,33 +186,51 @@ const safeMediaUrl = value => {
     return ["https:", "http:"].includes(url.protocol) || (url.protocol === "file:" && location.protocol === "file:") ? url.href : "";
   } catch { return ""; }
 };
+const isInstagramReel = value => {
+  try { const url = new URL(value); return ["instagram.com", "www.instagram.com"].includes(url.hostname) && /^\/reel\/[\w-]+\/?$/.test(url.pathname); }
+  catch { return false; }
+};
 const verticalProjects = CONFIG.verticalProjects.filter(p =>
-  p.title && p.client && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video)));
+  p.title && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video) || isInstagramReel(p.video)));
 const verticalGrid = $("#verticalGrid");
 $("#verticais").hidden = !verticalProjects.length;
-verticalProjects.forEach(p => {
+verticalProjects.forEach((p, index) => {
+  const instagram = isInstagramReel(p.video);
   const article = document.createElement("article");
   article.className = "vertical-card";
-  const media = document.createElement("button");
-  media.type = "button"; media.className = "vertical-cover";
-  media.setAttribute("aria-label", `Assistir: ${p.title}, ${p.client}`);
-  const image = document.createElement("img");
-  image.src = safeMediaUrl(p.thumbnail) || thumbOf(p);
-  image.alt = `Capa de ${p.title}`; image.loading = "lazy";
-  image.width = 360; image.height = 640;
-  const play = document.createElement("span");
-  play.className = "card-play"; play.textContent = "▶"; play.setAttribute("aria-hidden", "true");
-  media.append(image, play);
+  const media = document.createElement(instagram ? "a" : "button");
+  media.className = "vertical-cover";
+  media.setAttribute("aria-label", `Assistir: ${p.title}${instagram ? " no Instagram (nova aba)" : ""}`);
+  if (instagram) { media.href = safeMediaUrl(p.video); media.target = "_blank"; media.rel = "noreferrer"; }
+  else media.type = "button";
+  const cover = safeMediaUrl(p.thumbnail) || (ytId(p.video) ? thumbOf(p) : "");
+  if (cover) {
+    const image = document.createElement("img");
+    image.src = cover; image.alt = `Capa de ${p.title}`; image.loading = "lazy";
+    image.width = 360; image.height = 640; media.append(image);
+  } else {
+    // Apresentação tipográfica; não representa uma miniatura do vídeo.
+    media.classList.add("reel-cover");
+    const label = document.createElement("span"); label.className = "reel-cover-label"; label.textContent = "INSTAGRAM REELS";
+    const number = document.createElement("span"); number.className = "reel-cover-number"; number.textContent = String(index + 1).padStart(2, "0");
+    const action = document.createElement("span"); action.className = "reel-cover-action"; action.textContent = "Assistir no Instagram ↗";
+    media.append(label, number, action);
+  }
+  if (cover) {
+    const play = document.createElement("span"); play.className = "card-play";
+    play.textContent = "▶"; play.setAttribute("aria-hidden", "true"); media.append(play);
+  }
   const title = document.createElement("h3"); title.textContent = p.title;
   const format = document.createElement("p"); format.className = "small";
-  format.textContent = `${p.client} · ${p.platform || "Vídeo vertical"}`;
+  format.textContent = [p.client, p.platform || "Vídeo vertical"].filter(Boolean).join(" · ");
   const description = document.createElement("p"); description.className = "muted"; description.textContent = p.description || "";
   const link = document.createElement("a"); link.className = "vertical-link";
   link.href = safeMediaUrl(p.video); link.target = "_blank"; link.rel = "noreferrer";
-  link.textContent = "Assistir na plataforma ↗";
-  media.addEventListener("click", () => {
-    if (ytId(p.video) || /vimeo\.com|drive\.google\.com/.test(new URL(p.video).hostname)) {
-      openVideoProject({ ...p, category: p.platform || "Vídeo vertical", vertical: true, services: p.services || ["Edição de vídeo"], year: p.year || "" });
+  link.textContent = instagram ? "Ver Reel completo ↗" : "Assistir na plataforma ↗";
+  if (!instagram) media.addEventListener("click", () => {
+    const hostname = new URL(p.video, location.href).hostname;
+    if (ytId(p.video) || ["vimeo.com", "www.vimeo.com", "player.vimeo.com", "drive.google.com"].includes(hostname)) {
+      openVideoProject({ ...p, client: p.client || "", category: p.platform || "Vídeo vertical", vertical: true, services: p.services || ["Edição de vídeo"], year: p.year || "" });
     } else link.click();
   });
   article.append(media, title, format, description, link);
