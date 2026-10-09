@@ -15,7 +15,7 @@ themeToggle.addEventListener("click", () => {
 });
 
 /* =====================================================
-   ✏️ CONFIGURAÇÃO — edite só esta parte
+   ✏️ CONFIGURAÇÃO · edite só esta parte
    Em "video"/"showreel" cole o link normal do YouTube, Vimeo
    ou Google Drive (ou o link de embed). Ele vira iframe sozinho.
    "thumbnail" é opcional: vazio = pega a capa do YouTube
@@ -31,25 +31,25 @@ const CONFIG = {
   // video: URL real, thumbnail: arquivo real (obrigatório fora do YouTube),
   // description, services: ["Edição de vídeo"], year }
   verticalProjects: [
-    { title: "Reel 01 · Rex", client: "@rex_z77", platform: "Instagram Reels",
+    { title: "Reel 01 · Rex", client: "@rex_z77", creator: "Rex", platform: "Instagram Reels",
       video: "https://www.instagram.com/reel/Db1qw8qRnNk/", thumbnail: "",
-      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      description: "Trabalho de edição em formato vertical.",
       services: ["Edição de vídeo"] },
-    { title: "Reel 02 · JP Victor", client: "@jpvictorzx", platform: "Instagram Reels",
+    { title: "Reel 02 · JP Victor", client: "@jpvictorzx", creator: "JP Victor", platform: "Instagram Reels",
       video: "https://www.instagram.com/reel/Dczj-TvMhn4/", thumbnail: "",
-      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      description: "Trabalho de edição em formato vertical.",
       services: ["Edição de vídeo"] },
-    { title: "Reel 03 · Casa Clutch", client: "@casa.clutch", platform: "Instagram Reels",
+    { title: "Reel 03 · Casa Clutch", client: "@casa.clutch", creator: "Casa Clutch", platform: "Instagram Reels",
       video: "https://www.instagram.com/reel/DdPuYkUS9FW/", thumbnail: "",
-      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      description: "Trabalho de edição em formato vertical.",
       services: ["Edição de vídeo"] },
-    { title: "Reel 04 · Juan Milioni", client: "@juanmilioni", platform: "Instagram Reels",
+    { title: "Reel 04 · Juan Milioni", client: "@juanmilioni", creator: "Juan Milioni", platform: "Instagram Reels",
       video: "https://www.instagram.com/reel/Dcy5_BAp-Ic/", thumbnail: "",
-      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      description: "Trabalho de edição em formato vertical.",
       services: ["Edição de vídeo"] },
-    { title: "Reel 05 · Juan Milioni", client: "@juanmilioni", platform: "Instagram Reels",
+    { title: "Reel 05 · Juan Milioni", client: "@juanmilioni", creator: "Juan Milioni", platform: "Instagram Reels",
       video: "https://www.instagram.com/reel/Dc_na-RpHoE/", thumbnail: "",
-      description: "Edição de vídeo vertical. Assista ao trabalho completo no Instagram.",
+      description: "Trabalho de edição em formato vertical.",
       services: ["Edição de vídeo"] },
   ],
   // thumbnails: { src: caminho do arquivo autoral, alt: descrição da capa, title }
@@ -116,10 +116,10 @@ CONFIG.projects.forEach((p, i) => {
   card.setAttribute("aria-roledescription", "slide");
   card.setAttribute("aria-label", `${i + 1} de ${CONFIG.projects.length}: ${p.title}`);
   card.innerHTML = `<button class="card-btn" data-i="${i}" aria-label="Ver projeto ${p.title}">
-    <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa — " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
+    <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa · " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
       <span class="card-play" aria-hidden="true">▶</span><div class="ov"><span>${p.category}</span><span>Assistir ao vídeo ↗</span></div></div>
     <div class="meta"><h3>${p.title}</h3><span>${p.year}</span></div>
-    <p class="muted">${p.category} — ${p.editType}</p></button>`;
+    <p class="muted">${p.category} · ${p.editType}</p></button>`;
   grid.appendChild(card);
 });
 
@@ -194,8 +194,9 @@ const verticalProjects = CONFIG.verticalProjects.filter(p =>
   p.title && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video) || isInstagramReel(p.video)));
 const verticalGrid = $("#verticalGrid");
 $("#verticais").hidden = !verticalProjects.length;
-// Incorporação oficial carregada apenas quando a prévia entra na tela.
+// Incorporação oficial carregada somente após interação. Uma prévia ativa por vez.
 let instagramScriptPromise;
+let activeInstagramPreview = null;
 function loadInstagramEmbeds() {
   if (window.instgrm?.Embeds) return Promise.resolve();
   if (!instagramScriptPromise) instagramScriptPromise = new Promise((resolve, reject) => {
@@ -220,13 +221,6 @@ function mountInstagramPreview(container, project) {
     blockquote.replaceChildren(fallback);
   });
 }
-const instagramObserver = "IntersectionObserver" in window
-  ? new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        mountInstagramPreview(entry.target, entry.target.instagramProject);
-        instagramObserver.unobserve(entry.target);
-      }
-    }), { rootMargin: "120px" }) : null;
 verticalProjects.forEach((p, index) => {
   const instagram = isInstagramReel(p.video);
   const article = document.createElement("article");
@@ -267,20 +261,41 @@ verticalProjects.forEach((p, index) => {
     } else link.click();
   });
   if (instagram) {
-    const preview = document.createElement("div");
-    preview.className = "instagram-preview";
-    preview.setAttribute("aria-label", `Prévia de ${p.title} no Instagram`);
-    preview.instagramProject = p;
+    const creator = p.creator || p.client.replace(/^@/, "");
     const author = document.createElement("a");
     author.className = "reel-author";
     author.href = new URL(p.client.replace(/^@/, "") + "/", "https://www.instagram.com/").href;
     author.target = "_blank"; author.rel = "noreferrer";
-    author.textContent = p.client;
-    author.setAttribute("aria-label", `Perfil de ${p.client} no Instagram (nova aba)`);
-    article.append(author, preview);
+    author.textContent = creator;
+    author.setAttribute("aria-label", `Perfil de ${creator} no Instagram (nova aba)`);
+    const preview = document.createElement("div");
+    preview.className = "instagram-preview";
+    preview.setAttribute("aria-label", `Prévia do Reel de ${creator}`);
+    const launch = document.createElement("button");
+    launch.type = "button"; launch.className = "reel-launch";
+    launch.setAttribute("aria-label", `Carregar prévia do Reel de ${creator}`);
+    if (safeMediaUrl(p.thumbnail)) {
+      const image = document.createElement("img");
+      image.src = safeMediaUrl(p.thumbnail); image.alt = `Miniatura do Reel de ${creator}`;
+      image.loading = "lazy"; image.width = 360; image.height = 640; launch.append(image);
+    }
+    const action = document.createElement("span");
+    action.className = "reel-launch-action"; action.textContent = "▶ Carregar prévia";
+    launch.append(action);
+    function resetPreview() {
+      preview.replaceChildren(launch); delete preview.dataset.mounted;
+    }
+    launch.addEventListener("click", () => {
+      activeInstagramPreview?.reset();
+      preview.replaceChildren();
+      mountInstagramPreview(preview, p);
+      link.focus({preventScroll:true});
+      activeInstagramPreview = { reset: resetPreview };
+    });
+    resetPreview();
+    format.textContent = p.platform || "Vídeo vertical";
+    article.append(author, preview, format, description, link);
     verticalGrid.append(article);
-    if (instagramObserver) instagramObserver.observe(preview);
-    else mountInstagramPreview(preview, p);
   } else {
     article.append(media, title, format, description, link);
     verticalGrid.append(article);
