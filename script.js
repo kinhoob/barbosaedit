@@ -26,6 +26,15 @@ const CONFIG = {
   instagram: "https://www.instagram.com/_barbosadmelo/", // ← seu Instagram
   email: "",      // ← seu e-mail
   showreel: { video: "", thumbnail: "" },    // ← link do showreel
+  // PLACEHOLDERS: listas vazias até adicionar trabalhos reais; não aparecem no site.
+  // verticalProjects: { title, client, platform: "Shorts"/"Reels"/"TikTok",
+  // video: URL real, thumbnail: arquivo real (obrigatório fora do YouTube),
+  // description, services: ["Edição de vídeo"], year }
+  verticalProjects: [],
+  // thumbnails: { src: caminho do arquivo autoral, alt: descrição da capa, title }
+  // Adicione os arquivos ao repositório e informe seus caminhos relativos em src.
+  // As capas automáticas do YouTube não são apresentadas como criações autorais.
+  thumbnails: [],
   projects: [
     { title: "Casa Clutch", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
       video: "https://youtu.be/lXB8Dn48W6s", thumbnail: "", vertical: false,
@@ -132,8 +141,8 @@ updateCarousel();
 
 // modal
 const modal = $("#modal");
-function openProject(i) {
-  const p = CONFIG.projects[i];
+function openProject(i) { openVideoProject(CONFIG.projects[i]); }
+function openVideoProject(p) {
   $("#m-title").textContent = p.title;
   $("#mVideo").className = "m-video" + (p.vertical ? " v" : "");
   $("#mVideo").innerHTML = p.video ? iframe(toEmbed(p.video), p.title) : `<div class="empty">Cole o link do vídeo em script.js</div>`;
@@ -147,6 +156,96 @@ modal.addEventListener("close", () => { $("#mVideo").innerHTML = ""; document.bo
 modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 $("#close").addEventListener("click", closeModal);
 grid.addEventListener("click", (e) => { const b = e.target.closest(".card-btn"); if (b) openProject(+b.dataset.i); });
+
+// Seleções reais: nenhuma seção vazia é exibida ao visitante.
+const safeMediaUrl = value => {
+  if (typeof value !== "string" || !value.trim()) return "";
+  try {
+    const url = new URL(value, location.href);
+    return ["https:", "http:"].includes(url.protocol) || (url.protocol === "file:" && location.protocol === "file:") ? url.href : "";
+  } catch { return ""; }
+};
+const verticalProjects = CONFIG.verticalProjects.filter(p =>
+  p.title && p.client && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video)));
+const verticalGrid = $("#verticalGrid");
+$("#verticais").hidden = !verticalProjects.length;
+verticalProjects.forEach(p => {
+  const article = document.createElement("article");
+  article.className = "vertical-card";
+  const media = document.createElement("button");
+  media.type = "button"; media.className = "vertical-cover";
+  media.setAttribute("aria-label", `Assistir: ${p.title}, ${p.client}`);
+  const image = document.createElement("img");
+  image.src = safeMediaUrl(p.thumbnail) || thumbOf(p);
+  image.alt = `Capa de ${p.title}`; image.loading = "lazy";
+  image.width = 360; image.height = 640;
+  const play = document.createElement("span");
+  play.className = "card-play"; play.textContent = "▶"; play.setAttribute("aria-hidden", "true");
+  media.append(image, play);
+  const title = document.createElement("h3"); title.textContent = p.title;
+  const format = document.createElement("p"); format.className = "small";
+  format.textContent = `${p.client} · ${p.platform || "Vídeo vertical"}`;
+  const description = document.createElement("p"); description.className = "muted"; description.textContent = p.description || "";
+  const link = document.createElement("a"); link.className = "vertical-link";
+  link.href = safeMediaUrl(p.video); link.target = "_blank"; link.rel = "noreferrer";
+  link.textContent = "Assistir na plataforma ↗";
+  media.addEventListener("click", () => {
+    if (ytId(p.video) || /vimeo\.com|drive\.google\.com/.test(new URL(p.video).hostname)) {
+      openVideoProject({ ...p, category: p.platform || "Vídeo vertical", vertical: true, services: p.services || ["Edição de vídeo"], year: p.year || "" });
+    } else link.click();
+  });
+  article.append(media, title, format, description, link);
+  verticalGrid.append(article);
+});
+
+// Galeria acessível: miniaturas primeiro, imagem maior após interação.
+const galleryItems = CONFIG.thumbnails.filter(item => safeMediaUrl(item.src) && item.alt && item.title);
+const gallery = $("#thumbnailModal"), galleryImage = $("#galleryImage"), galleryStrip = $("#galleryStrip");
+const galleryPrev = $("#galleryPrev"), galleryNext = $("#galleryNext");
+let galleryIndex = 0, galleryReturnFocus, galleryOverflow;
+$("#thumbnails").hidden = !galleryItems.length;
+function selectThumbnail(index) {
+  if (!galleryItems.length) return;
+  galleryIndex = (index + galleryItems.length) % galleryItems.length;
+  const item = galleryItems[galleryIndex];
+  galleryImage.src = safeMediaUrl(item.src); galleryImage.alt = item.alt;
+  $("#galleryCaption").textContent = item.title;
+  $("#galleryCount").textContent = `${galleryIndex + 1} de ${galleryItems.length}`;
+  [...galleryStrip.children].forEach((button, i) => button.setAttribute("aria-pressed", String(i === galleryIndex)));
+  galleryPrev.disabled = galleryNext.disabled = galleryItems.length < 2;
+}
+galleryItems.forEach((item, index) => {
+  const button = document.createElement("button"); button.type = "button";
+  button.setAttribute("aria-label", `Ampliar: ${item.title}`);
+  button.setAttribute("aria-pressed", "false");
+  const image = document.createElement("img"); image.src = safeMediaUrl(item.src);
+  image.alt = item.alt; image.loading = "lazy"; image.width = 160; image.height = 90;
+  button.append(image); button.addEventListener("click", () => selectThumbnail(index));
+  galleryStrip.append(button);
+});
+$("#openThumbnails").addEventListener("click", () => {
+  if (!galleryItems.length) return;
+  galleryReturnFocus = document.activeElement; galleryOverflow = document.body.style.overflow;
+  selectThumbnail(0); gallery.showModal(); document.body.style.overflow = "hidden";
+  $("#galleryClose").focus();
+});
+$("#galleryClose").addEventListener("click", () => gallery.close());
+galleryPrev.addEventListener("click", () => selectThumbnail(galleryIndex - 1));
+galleryNext.addEventListener("click", () => selectThumbnail(galleryIndex + 1));
+gallery.addEventListener("keydown", event => {
+  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+    event.preventDefault(); selectThumbnail(galleryIndex + (event.key === "ArrowRight" ? 1 : -1));
+  }
+});
+gallery.addEventListener("click", event => {
+  const rect = gallery.getBoundingClientRect();
+  if (event.target === gallery && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) gallery.close();
+});
+gallery.addEventListener("close", () => {
+  document.body.style.overflow = galleryOverflow || "";
+  galleryImage.removeAttribute("src");
+  galleryReturnFocus?.focus({preventScroll:true});
+});
 
 // navbar + menu mobile
 const nav = $("#nav"), links = $("#links"), mb = $("#menuBtn");
