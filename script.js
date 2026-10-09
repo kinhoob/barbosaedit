@@ -194,6 +194,39 @@ const verticalProjects = CONFIG.verticalProjects.filter(p =>
   p.title && safeMediaUrl(p.video) && (safeMediaUrl(p.thumbnail) || ytId(p.video) || isInstagramReel(p.video)));
 const verticalGrid = $("#verticalGrid");
 $("#verticais").hidden = !verticalProjects.length;
+// Incorporação oficial carregada apenas quando a prévia entra na tela.
+let instagramScriptPromise;
+function loadInstagramEmbeds() {
+  if (window.instgrm?.Embeds) return Promise.resolve();
+  if (!instagramScriptPromise) instagramScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://www.instagram.com/embed.js"; script.async = true;
+    script.onload = resolve; script.onerror = reject; document.body.append(script);
+  });
+  return instagramScriptPromise;
+}
+function mountInstagramPreview(container, project) {
+  if (container.dataset.mounted) return;
+  container.dataset.mounted = "true";
+  const blockquote = document.createElement("blockquote");
+  blockquote.className = "instagram-media";
+  blockquote.setAttribute("data-instgrm-permalink", project.video);
+  blockquote.setAttribute("data-instgrm-version", "14");
+  const fallback = document.createElement("a");
+  fallback.href = project.video; fallback.target = "_blank"; fallback.rel = "noreferrer";
+  fallback.textContent = "Ver este Reel no Instagram ↗";
+  blockquote.append(fallback); container.append(blockquote);
+  loadInstagramEmbeds().then(() => window.instgrm?.Embeds.process()).catch(() => {
+    blockquote.replaceChildren(fallback);
+  });
+}
+const instagramObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        mountInstagramPreview(entry.target, entry.target.instagramProject);
+        instagramObserver.unobserve(entry.target);
+      }
+    }), { rootMargin: "120px" }) : null;
 verticalProjects.forEach((p, index) => {
   const instagram = isInstagramReel(p.video);
   const article = document.createElement("article");
@@ -233,8 +266,19 @@ verticalProjects.forEach((p, index) => {
       openVideoProject({ ...p, client: p.client || "", category: p.platform || "Vídeo vertical", vertical: true, services: p.services || ["Edição de vídeo"], year: p.year || "" });
     } else link.click();
   });
-  article.append(media, title, format, description, link);
-  verticalGrid.append(article);
+  if (instagram) {
+    const preview = document.createElement("div");
+    preview.className = "instagram-preview";
+    preview.setAttribute("aria-label", `Prévia de ${p.title} no Instagram`);
+    preview.instagramProject = p;
+    article.append(preview, title, format, description, link);
+    verticalGrid.append(article);
+    if (instagramObserver) instagramObserver.observe(preview);
+    else mountInstagramPreview(preview, p);
+  } else {
+    article.append(media, title, format, description, link);
+    verticalGrid.append(article);
+  }
 });
 
 // Galeria acessível: miniaturas primeiro, imagem maior após interação.
