@@ -247,12 +247,46 @@ gallery.addEventListener("close", () => {
   galleryReturnFocus?.focus({preventScroll:true});
 });
 
-// navbar + menu mobile
+// Navbar e menu móvel: Escape, foco contido e fundo inativo.
 const nav = $("#nav"), links = $("#links"), mb = $("#menuBtn");
+let menuOverflow = "";
+const menuBackground = [document.querySelector("main"), document.querySelector("footer")];
+const menuOriginalInert = menuBackground.map(element => element.inert);
 const onScroll = () => nav.classList.toggle("solid", scrollY > 40 || links.classList.contains("open"));
-onScroll(); addEventListener("scroll", onScroll, { passive: true });
-mb.addEventListener("click", () => { const o = links.classList.toggle("open"); mb.setAttribute("aria-expanded", o); mb.textContent = o ? "Fechar" : "Menu"; nav.classList.toggle("solid", o || scrollY > 40); });
-links.addEventListener("click", (e) => { if (e.target.closest("a")) { links.classList.remove("open"); mb.setAttribute("aria-expanded", false); mb.textContent = "Menu"; } });
+function setMenu(open, returnFocus = true) {
+  const wasOpen = links.classList.contains("open");
+  links.classList.toggle("open", open);
+  mb.setAttribute("aria-expanded", String(open));
+  mb.textContent = open ? "Fechar" : "Menu";
+  if (open && !wasOpen) menuOverflow = document.body.style.overflow;
+  if (open) document.body.style.overflow = "hidden";
+  else if (wasOpen) document.body.style.overflow = menuOverflow;
+  menuBackground.forEach((element, i) => { element.inert = open || menuOriginalInert[i]; });
+  onScroll();
+  if (!open && wasOpen && returnFocus) mb.focus({preventScroll:true});
+}
+onScroll(); addEventListener("scroll", onScroll, {passive:true});
+mb.addEventListener("click", () => setMenu(!links.classList.contains("open")));
+links.addEventListener("click", event => {
+  const anchor = event.target.closest("a");
+  if (!anchor) return;
+  setMenu(false, false);
+  if (anchor.getAttribute("href")?.startsWith("#")) {
+    const target = document.querySelector(anchor.getAttribute("href"));
+    if (target) { target.setAttribute("tabindex", "-1"); target.focus({preventScroll:true}); }
+  } else mb.focus({preventScroll:true});
+});
+nav.addEventListener("keydown", event => {
+  if (!links.classList.contains("open")) return;
+  if (event.key === "Escape") { event.preventDefault(); setMenu(false); }
+  if (event.key === "Tab") {
+    const focusable = [mb, ...links.querySelectorAll("a[href]")].filter(element => !element.hidden);
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+});
+addEventListener("resize", () => { if (innerWidth > 900 && links.classList.contains("open")) setMenu(false, false); });
 
 // Entrada progressiva; o conteúdo permanece visível se as animações não iniciarem.
 const revealElements = document.querySelectorAll(".rv, .svc");
