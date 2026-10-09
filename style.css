@@ -454,3 +454,45 @@ html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{sc
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(59,130,246,.48)}
+
+/* Hierarquia compacta e conteúdo real. */
+.hero{padding-top:clamp(6rem,8vw,8rem);padding-bottom:clamp(2rem,4vw,4rem);row-gap:1.25rem}
+.hero-copy,.hero-frame{min-width:0}
+.hero-title{font-size:clamp(2.4rem,4.5vw,4.75rem)}
+.creator-metric,.channel-subs{grid-column:1/-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:.4rem .65rem;padding-top:1rem;border-top:1px solid var(--line)}
+.creator-metric strong,.channel-subs strong{font-size:clamp(1.8rem,3vw,2.5rem);line-height:1.15;letter-spacing:-.04em;color:var(--blue2);font-weight:600}
+.creator-metric span,.channel-subs span{font-size:.75rem;color:var(--mute)}
+.metrics-note{max-width:70ch;margin-top:1rem;font-size:.75rem;color:var(--mute)}
+.creator-card>div{min-width:0}
+#verticalGrid .vertical-card{flex-basis:280px}
+#verticalGrid .instagram-preview{height:360px}
+.reel-launch{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:44px;overflow:hidden;background:var(--accent-wash);color:var(--blue2)}
+.reel-launch img{width:100%;height:100%;object-fit:cover}
+.reel-launch-action{padding:.8rem 1rem;border:1px solid var(--stroke);border-radius:999px;background:var(--surface);font-size:.8rem}
+.reel-launch img+.reel-launch-action{position:absolute}
+#verticalGrid .vertical-card>p,#verticalGrid .vertical-card>.vertical-link{margin-inline:1rem}
+#verticalGrid .vertical-card>.vertical-link{margin-bottom:.75rem}
+#verticalGrid .reel-author{font-size:.9rem}
+.gallery-strip button{flex-shrink:0}
+@media(max-width:900px){
+ .hero{row-gap:1rem;padding-top:6rem;padding-bottom:1.5rem}
+ .hero-frame{margin-top:0;max-width:520px}
+ .hero-title{font-size:clamp(2.2rem,6vw,3.5rem)}
+}
+@media(max-width:480px){
+ .hero{padding-top:5.5rem}
+ .hero-title{font-size:clamp(2rem,8vw,2.45rem);line-height:1.08}
+ .hero-copy .lead{font-size:1rem;line-height:1.5}
+ .hero-copy .muted{margin-top:.5rem;font-size:.8rem}
+ .hero .ctas{margin-top:1rem}
+ .hero-frame .frame-label{margin-bottom:.4rem}
+ .hero-frame .timeline{display:none}
+ .hero-frame{max-width:360px}
+ #trabalhos{padding-top:1.75rem}
+ #verticalGrid .vertical-card{flex-basis:min(280px,88%)}
+ #verticalGrid .instagram-preview{height:360px}
+ .creator-card{padding:1.15rem;gap:1rem}
+ .services,.steps{grid-template-columns:minmax(0,1fr)}
+ .carousel-controls{gap:.75rem}
+ .gallery-modal{max-height:90svh}
+}
