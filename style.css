@@ -466,10 +466,6 @@ html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{sc
 .creator-card>div{min-width:0}
 #verticalGrid .vertical-card{flex-basis:280px}
 #verticalGrid .instagram-preview{height:360px}
-.reel-launch{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:44px;overflow:hidden;background:var(--accent-wash);color:var(--blue2)}
-.reel-launch img{width:100%;height:100%;object-fit:cover}
-.reel-launch-action{padding:.8rem 1rem;border:1px solid var(--stroke);border-radius:999px;background:var(--surface);font-size:.8rem}
-.reel-launch img+.reel-launch-action{position:absolute}
 #verticalGrid .vertical-card>p,#verticalGrid .vertical-card>.vertical-link{margin-inline:1rem}
 #verticalGrid .vertical-card>.vertical-link{margin-bottom:.75rem}
 #verticalGrid .reel-author{font-size:.9rem}
@@ -496,3 +492,8 @@ html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{sc
  .carousel-controls{gap:.75rem}
  .gallery-modal{max-height:90svh}
 }
+
+/* Seguidores discretos nos perfis do Instagram. */
+#perfis-instagram .creator-metric{gap:.35rem .5rem;padding-top:.75rem}
+#perfis-instagram .creator-metric strong{font-size:.9rem;line-height:1.4;letter-spacing:0;font-weight:500;color:var(--blue2)}
+#perfis-instagram .creator-metric span{font-size:.75rem}
