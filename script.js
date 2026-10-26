@@ -69,6 +69,10 @@ const CONFIG = {
       video: "https://youtu.be/ANrPaqlfLFg", thumbnail: "", vertical: false,
       description: "Vídeo editado para Rex. Assista ao vídeo completo para conhecer o resultado.",
       services: ["Edição de vídeo"] },
+    { title: "Fizemos a maquiagem da Kika!", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
+      video: "https://www.youtube.com/watch?v=fAV0r9yumKs", thumbnail: "", vertical: false,
+      description: "Vídeo editado para Casa Clutch.",
+      services: ["Edição de vídeo"] },
   ],
 };
 
@@ -80,7 +84,14 @@ function toEmbed(u, autoplay = false) {
   if (!u) return "";
   let e = u;
   const y = ytId(u), v = u.match(/vimeo\.com\/(?:video\/)?(\d+)/), d = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
-  if (y) e = `https://www.youtube-nocookie.com/embed/${y}?rel=0`;
+  if (y) {
+    e = `https://www.youtube-nocookie.com/embed/${y}?rel=0`;
+    const params = new URL(u).searchParams;
+    const time = params.get("start") || params.get("t") || "";
+    const match = time.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/);
+    const seconds = match ? Number(match[1] || 0) * 3600 + Number(match[2] || 0) * 60 + Number(match[3] || 0) : 0;
+    if (seconds) e += `&start=${seconds}`;
+  }
   else if (v) e = `https://player.vimeo.com/video/${v[1]}`;
   else if (d) e = `https://drive.google.com/file/d/${d[1]}/preview`;
   return autoplay ? e + (e.includes("?") ? "&" : "?") + "autoplay=1" : e;
@@ -111,9 +122,9 @@ $("#srPlay").addEventListener("click", () => {
 const grid = $("#grid");
 CONFIG.projects.forEach((p, i) => {
   const card = document.createElement("article");
-  card.className = "card rv video-reveal";
+  card.className = "card work-stack-card";
   card.setAttribute("role", "group");
-  card.setAttribute("aria-roledescription", "slide");
+
   card.setAttribute("aria-label", `${i + 1} de ${CONFIG.projects.length}: ${p.title}`);
   card.innerHTML = `<button class="card-btn" data-i="${i}" aria-label="Ver projeto ${p.title}">
     <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa · " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
@@ -123,42 +134,49 @@ CONFIG.projects.forEach((p, i) => {
   grid.appendChild(card);
 });
 
-// Carrossel: rolagem nativa por toque, botões e teclado.
+// Trabalhos empilhados: a rolagem nativa conduz a apresentação.
 const prevWork = $("#prevWork"), nextWork = $("#nextWork"), workCount = $("#workCount");
 const cards = [...grid.children];
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-function currentWork() {
-  const left = grid.getBoundingClientRect().left;
-  return cards.reduce((best, card, i) =>
-    Math.abs(card.getBoundingClientRect().left - left) <
-    Math.abs(cards[best].getBoundingClientRect().left - left) ? i : best, 0);
-}
-function updateCarousel() {
-  const index = currentWork();
-  workCount.textContent = cards.length ? `${String(index + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}` : "Nenhum vídeo";
-  prevWork.disabled = grid.scrollLeft <= 2;
-  nextWork.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 2;
+const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+const reducedMotion = motionPreference.matches;
+let activeWork = 0;
+function updateWorks() {
+  const pin = Math.min(innerHeight * .18, 128);
+  activeWork = 0;
+  cards.forEach((card, i) => {
+    const rect = card.getBoundingClientRect();
+    if (rect.top <= pin + 10) activeWork = i;
+    const progress = Math.max(0, Math.min(1, (innerHeight - rect.top) / innerHeight));
+    card.style.setProperty("--work-progress", progress);
+  });
+  workCount.textContent = String(activeWork + 1).padStart(2,"0") + " / " + String(cards.length).padStart(2,"0");
+  prevWork.disabled = activeWork === 0;
+  nextWork.disabled = activeWork === cards.length - 1;
 }
 function moveWork(direction) {
-  const index = Math.max(0, Math.min(cards.length - 1, currentWork() + direction));
-  if (!cards[index]) return;
-  grid.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: reducedMotion ? "instant" : "smooth" });
+  cards[Math.max(0, Math.min(cards.length - 1, activeWork + direction))]?.scrollIntoView({block:"start", behavior:motionPreference.matches ? "instant" : "smooth"});
 }
 prevWork.addEventListener("click", () => moveWork(-1));
 nextWork.addEventListener("click", () => moveWork(1));
-grid.addEventListener("keydown", (event) => {
-  if (event.target !== grid) return;
-  if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+grid.addEventListener("keydown", event => {
+  if(event.target !== grid) return;
+  if(event.key === "ArrowRight" || event.key === "ArrowLeft") {
     event.preventDefault(); moveWork(event.key === "ArrowRight" ? 1 : -1);
   }
 });
-let carouselFrame;
-grid.addEventListener("scroll", () => {
-  cancelAnimationFrame(carouselFrame);
-  carouselFrame = requestAnimationFrame(updateCarousel);
-}, { passive: true });
-addEventListener("resize", updateCarousel);
-updateCarousel();
+const backToTop = $("#backToTop");
+function updateTopButton() { backToTop.hidden = scrollY < innerHeight * .65; }
+backToTop.addEventListener("click", () => {
+  window.scrollTo({top:0, behavior:motionPreference.matches ? "instant" : "smooth"});
+  const top = $("#top"); top.setAttribute("tabindex","-1"); top.focus({preventScroll:true});
+});
+let worksFrame = 0;
+addEventListener("scroll", () => {
+  if (worksFrame) return;
+  worksFrame = requestAnimationFrame(() => { updateWorks(); updateTopButton(); worksFrame = 0; });
+}, {passive:true});
+addEventListener("resize", updateWorks);
+updateWorks(); updateTopButton();
 
 // modal
 const modal = $("#modal");
