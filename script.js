@@ -122,7 +122,7 @@ $("#srPlay").addEventListener("click", () => {
 const grid = $("#grid");
 CONFIG.projects.forEach((p, i) => {
   const card = document.createElement("article");
-  card.className = "card work-stack-card";
+  card.className = "card rv video-reveal";
   card.setAttribute("role", "group");
 
   card.setAttribute("aria-label", `${i + 1} de ${CONFIG.projects.length}: ${p.title}`);
@@ -134,49 +134,51 @@ CONFIG.projects.forEach((p, i) => {
   grid.appendChild(card);
 });
 
-// Trabalhos empilhados: a rolagem nativa conduz a apresentação.
+// Carrossel: rolagem nativa por toque, botões e teclado.
 const prevWork = $("#prevWork"), nextWork = $("#nextWork"), workCount = $("#workCount");
 const cards = [...grid.children];
-const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
-const reducedMotion = motionPreference.matches;
-let activeWork = 0;
-function updateWorks() {
-  const pin = Math.min(innerHeight * .18, 128);
-  activeWork = 0;
-  cards.forEach((card, i) => {
-    const rect = card.getBoundingClientRect();
-    if (rect.top <= pin + 10) activeWork = i;
-    const progress = Math.max(0, Math.min(1, (innerHeight - rect.top) / innerHeight));
-    card.style.setProperty("--work-progress", progress);
-  });
-  workCount.textContent = String(activeWork + 1).padStart(2,"0") + " / " + String(cards.length).padStart(2,"0");
-  prevWork.disabled = activeWork === 0;
-  nextWork.disabled = activeWork === cards.length - 1;
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function currentWork() {
+  const left = grid.getBoundingClientRect().left;
+  return cards.reduce((best, card, i) =>
+    Math.abs(card.getBoundingClientRect().left - left) <
+    Math.abs(cards[best].getBoundingClientRect().left - left) ? i : best, 0);
+}
+function updateCarousel() {
+  const index = currentWork();
+  workCount.textContent = cards.length ? `${String(index + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}` : "Nenhum vídeo";
+  prevWork.disabled = grid.scrollLeft <= 2;
+  nextWork.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 2;
 }
 function moveWork(direction) {
-  cards[Math.max(0, Math.min(cards.length - 1, activeWork + direction))]?.scrollIntoView({block:"start", behavior:motionPreference.matches ? "instant" : "smooth"});
+  const index = Math.max(0, Math.min(cards.length - 1, currentWork() + direction));
+  if (!cards[index]) return;
+  grid.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: reducedMotion ? "instant" : "smooth" });
 }
 prevWork.addEventListener("click", () => moveWork(-1));
 nextWork.addEventListener("click", () => moveWork(1));
-grid.addEventListener("keydown", event => {
-  if(event.target !== grid) return;
-  if(event.key === "ArrowRight" || event.key === "ArrowLeft") {
+grid.addEventListener("keydown", (event) => {
+  if (event.target !== grid) return;
+  if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
     event.preventDefault(); moveWork(event.key === "ArrowRight" ? 1 : -1);
   }
 });
+let carouselFrame;
+grid.addEventListener("scroll", () => {
+  cancelAnimationFrame(carouselFrame);
+  carouselFrame = requestAnimationFrame(updateCarousel);
+}, { passive: true });
+addEventListener("resize", updateCarousel);
+updateCarousel();
+
 const backToTop = $("#backToTop");
 function updateTopButton() { backToTop.hidden = scrollY < innerHeight * .65; }
 backToTop.addEventListener("click", () => {
-  window.scrollTo({top:0, behavior:motionPreference.matches ? "instant" : "smooth"});
+  window.scrollTo({top:0, behavior:reducedMotion ? "instant" : "smooth"});
   const top = $("#top"); top.setAttribute("tabindex","-1"); top.focus({preventScroll:true});
 });
-let worksFrame = 0;
-addEventListener("scroll", () => {
-  if (worksFrame) return;
-  worksFrame = requestAnimationFrame(() => { updateWorks(); updateTopButton(); worksFrame = 0; });
-}, {passive:true});
-addEventListener("resize", updateWorks);
-updateWorks(); updateTopButton();
+addEventListener("scroll", updateTopButton, {passive:true});
+updateTopButton();
 
 // modal
 const modal = $("#modal");

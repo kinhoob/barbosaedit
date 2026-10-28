@@ -498,33 +498,10 @@ html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{sc
 #perfis-instagram .creator-metric strong{font-size:.9rem;line-height:1.4;letter-spacing:0;font-weight:500;color:var(--blue2)}
 #perfis-instagram .creator-metric span{font-size:.75rem}
 
-/* Trabalhos: imagens empilhadas e título fixo, conduzidos pelo scroll. */
-#trabalhos{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
-.works-heading{grid-column:2;grid-row:1;position:sticky;top:140px;padding-block:1rem 3rem}
-#trabalhos .big{font-size:clamp(2.5rem,4.6vw,6rem);line-height:.98;letter-spacing:-.055em}
-#trabalhos .work-intro{max-width:26ch;line-height:1.6;margin-top:2rem}
-#trabalhos .carousel{grid-column:1;grid-row:1;min-width:0}
-#grid{display:block;overflow:visible;padding:0;margin:0;scroll-snap-type:none}
-#grid .card{position:sticky;top:110px;scroll-margin-top:110px;min-width:0;margin:0 0 24vh;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 -12px 40px rgba(0,0,0,.18);transform:none;opacity:1}
-#grid .card:last-child{margin-bottom:0}
-#grid .card-btn{display:block;width:100%;text-align:left;background:var(--surface)}
-#grid .thumb{aspect-ratio:16/10;max-height:calc(100svh - 260px)}
-#grid .thumb img{transform:scale(calc(1.06 - var(--work-progress,1)*.06));filter:brightness(1);transition:none}
-#grid .meta{padding:1.25rem 1.25rem 0;margin-top:0}
-#grid .card-btn>p{padding:.5rem 1.25rem 1.25rem}
-#trabalhos .carousel-controls{margin-top:1.5rem}
+/* Voltar ao topo */
 .back-to-top{position:fixed;right:clamp(1rem,3vw,2.5rem);bottom:max(1.25rem,env(safe-area-inset-bottom));z-index:80;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--blue);color:#fff;border:1px solid var(--blue2);box-shadow:0 6px 24px #0003;transition:transform .2s,background .2s}
 .back-to-top[hidden]{display:none}
 .back-to-top:hover{transform:translateY(-4px)}
 .back-to-top:focus-visible{outline:3px solid var(--fg);outline-offset:4px}
-@media(max-width:900px){
- #trabalhos{display:block}.works-heading{position:static;padding-bottom:2rem}
- #trabalhos .big{font-size:clamp(2.8rem,10vw,5rem)}
- #trabalhos .work-intro{max-width:40ch;margin-top:1rem}
- #grid .card{top:88px;scroll-margin-top:88px;margin-bottom:12vh}
- #grid .thumb{aspect-ratio:16/10}
-}
-@media(prefers-reduced-motion:reduce){
- #grid .card{position:relative;top:auto;margin-bottom:2rem;box-shadow:none}
- #grid .thumb img{transform:none}.back-to-top{transition:none}
-}
+
+@media(prefers-reduced-motion:reduce){.back-to-top{transition:none}}

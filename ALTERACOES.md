@@ -8,3 +8,5 @@
 Validação local: JavaScript sem erros de sintaxe; quatro imagens carregadas no navegador com largura natural de 150 px; modal abre o iframe `https://www.youtube-nocookie.com/embed/fAV0r9yumKs?rel=0`, com título, capa e botão do player carregados.
 
 Repositório de origem: `kinhoob/barbosaedit`.
+
+Atualização: restaurado o carrossel horizontal original dos trabalhos a pedido do usuário. Mantidos botão de voltar ao topo, vídeo sem tempo inicial e fotos locais.
