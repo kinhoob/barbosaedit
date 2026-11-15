@@ -59,6 +59,21 @@ const CONFIG = {
   // Visualizações consultadas em 15/11/2026; atualizar ao incluir novos trabalhos.
   projects: [
     {
+      "title": "PRIMEIRA COMPRA DA CASA",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "video": "https://www.youtube.com/watch?v=dcgpoEVViNM",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 106925,
+      "featured": true
+    },
+    {
       "title": "FIZEMOS A MAQUIAGEM DA KIKA!",
       "client": "Casa Clutch",
       "category": "YouTube",
@@ -70,7 +85,7 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 6423
+      "views": 6429
     },
     {
       "title": "UM CEGO, UM SURDO E UM MUDO FAZENDO PASTEL",
@@ -84,21 +99,7 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 6124
-    },
-    {
-      "title": "ELE NUNCA TINHA ANDADO DE SKATE… DEU MUITO ERRADO",
-      "client": "Casa Clutch",
-      "category": "YouTube",
-      "year": "2026",
-      "video": "https://youtu.be/lXB8Dn48W6s",
-      "thumbnail": "",
-      "vertical": false,
-      "description": "Vídeo editado para Casa Clutch.",
-      "services": [
-        "Edição de vídeo"
-      ],
-      "views": 2391
+      "views": 6132
     },
     {
       "title": "O QUE DÁ PRA COMPRAR NA BRAZ COM R$200?",
@@ -129,6 +130,20 @@ const CONFIG = {
       "views": 537
     },
     {
+      "title": "ELE NUNCA TINHA ANDADO DE SKATE… DEU MUITO ERRADO",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "video": "https://youtu.be/lXB8Dn48W6s",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 2392
+    },
+    {
       "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
       "client": "Casa Clutch",
       "category": "YouTube",
@@ -140,7 +155,7 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 2276
+      "views": 2280
     },
     {
       "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
@@ -154,7 +169,7 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 1119
+      "views": 1123
     },
     {
       "title": "15 MINUTOS PRA MONTAR UM FIT NA DECATHLON",
@@ -168,7 +183,7 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 465
+      "views": 471
     },
     {
       "title": "PERDER NA SINUCA NUNCA DOEU TANTO! #SINUCACHALLENGE",
@@ -182,9 +197,10 @@ const CONFIG = {
       "services": [
         "Edição de vídeo"
       ],
-      "views": 261
+      "views": 294
     }
-  ],};
+  ],
+};
 
 /* ================= código ================= */
 const $ = (s, el = document) => el.querySelector(s);
@@ -271,6 +287,12 @@ $("#srPlay").addEventListener("click", () => {
   $("#srBox").innerHTML = iframe(toEmbed(sr.video, true), "Seleção de vídeos 2026");
 });
 
+// Média dos vídeos selecionados; os números são um retrato da data indicada.
+const averageViews = CONFIG.projects.reduce((total,p) => total + p.views, 0) / CONFIG.projects.length;
+const compactViews = value => new Intl.NumberFormat("pt-BR", {notation:"compact", maximumFractionDigits:1}).format(value);
+$("#averageViews").textContent = "≈ " + compactViews(averageViews) + " visualizações por vídeo";
+$("#viewsSample").textContent = "Média dos " + CONFIG.projects.length + " vídeos selecionados · consulta em 15/11/2026";
+
 // grid de projetos
 const grid = $("#grid");
 CONFIG.projects.forEach((p, i) => {
@@ -281,7 +303,7 @@ CONFIG.projects.forEach((p, i) => {
   card.setAttribute("aria-label", `${i + 1} de ${CONFIG.projects.length}: ${p.title}`);
   card.innerHTML = `<button class="card-btn" data-i="${i}" aria-label="Ver projeto ${p.title}">
     <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa · " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
-      <span class="card-play" aria-hidden="true">▶</span><div class="ov"><span>${p.category}</span><span>Assistir ao vídeo ↗</span></div></div>
+      <span class="card-play" aria-hidden="true">▶</span><div class="ov"><span>${p.featured ? "DESTAQUE · " + compactViews(p.views) + " visualizações" : p.category}</span><span>Assistir ao vídeo ↗</span></div></div>
     <div class="meta"><h3>${p.title}</h3><span>${p.year}</span></div>
     <p class="muted">${p.client}</p></button>`;
   grid.appendChild(card);

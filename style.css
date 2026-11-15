@@ -510,3 +510,7 @@ html,body,.grid,#verticalGrid,.instagram-preview,.gallery-strip,dialog,#links{sc
 .hero-pause{position:absolute;right:12px;top:12px;z-index:2;min-height:44px;padding:.5rem .75rem;border:1px solid #ffffff50;border-radius:8px;background:#080808cc;color:#fff;font-size:.7rem}
 .hero-pause:hover{background:#080808}
 .hero-pause:focus-visible{outline:2px solid var(--blue2);outline-offset:3px}
+
+.work-views{margin-top:1.25rem;padding-left:1rem;border-left:2px solid var(--blue2)}
+#averageViews{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:500;color:var(--blue2)}
+#viewsSample{margin-top:.35rem;font-size:.75rem}

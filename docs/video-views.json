@@ -1,11 +1,20 @@
 {
   "checkedAt": "2026-11-15",
+  "averageViews": 12766.5,
   "videos": [
+    {
+      "id": "dcgpoEVViNM",
+      "title": "PRIMEIRA COMPRA DA CASA",
+      "author": "Casa Clutch",
+      "views": 106925,
+      "embeddable": true,
+      "url": "https://www.youtube.com/watch?v=dcgpoEVViNM"
+    },
     {
       "id": "fAV0r9yumKs",
       "title": "FIZEMOS A MAQUIAGEM DA KIKA!",
       "author": "Casa Clutch",
-      "views": 6423,
+      "views": 6429,
       "embeddable": true,
       "url": "https://www.youtube.com/watch?v=fAV0r9yumKs"
     },
@@ -13,7 +22,7 @@
       "id": "fMrR6aI4x40",
       "title": "UM CEGO, UM SURDO E UM MUDO FAZENDO PASTEL",
       "author": "Casa Clutch",
-      "views": 6124,
+      "views": 6132,
       "embeddable": true,
       "url": "https://www.youtube.com/watch?v=fMrR6aI4x40"
     },
@@ -21,25 +30,9 @@
       "id": "lXB8Dn48W6s",
       "title": "ELE NUNCA TINHA ANDADO DE SKATE… DEU MUITO ERRADO",
       "author": "Casa Clutch",
-      "views": 2391,
+      "views": 2392,
       "embeddable": true,
       "url": "https://www.youtube.com/watch?v=lXB8Dn48W6s"
-    },
-    {
-      "id": "lAgpa49zraI",
-      "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
-      "author": "Casa Clutch",
-      "views": 2276,
-      "embeddable": true,
-      "url": "https://www.youtube.com/watch?v=lAgpa49zraI"
-    },
-    {
-      "id": "dDlQF7OR0OY",
-      "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
-      "author": "Casa Clutch",
-      "views": 1119,
-      "embeddable": true,
-      "url": "https://www.youtube.com/watch?v=dDlQF7OR0OY"
     },
     {
       "id": "S9YK_6tsb9M",
@@ -58,10 +51,26 @@
       "url": "https://www.youtube.com/watch?v=ANrPaqlfLFg"
     },
     {
+      "id": "lAgpa49zraI",
+      "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
+      "author": "Casa Clutch",
+      "views": 2280,
+      "embeddable": true,
+      "url": "https://www.youtube.com/watch?v=lAgpa49zraI"
+    },
+    {
+      "id": "dDlQF7OR0OY",
+      "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
+      "author": "Casa Clutch",
+      "views": 1123,
+      "embeddable": true,
+      "url": "https://www.youtube.com/watch?v=dDlQF7OR0OY"
+    },
+    {
       "id": "XeOziSjtG4A",
       "title": "15 MINUTOS PRA MONTAR UM FIT NA DECATHLON",
       "author": "_manosan",
-      "views": 465,
+      "views": 471,
       "embeddable": true,
       "url": "https://www.youtube.com/watch?v=XeOziSjtG4A"
     },
@@ -69,7 +78,7 @@
       "id": "fuHm0X7tbSQ",
       "title": "PERDER NA SINUCA NUNCA DOEU TANTO! #SINUCACHALLENGE",
       "author": "Casa Clutch",
-      "views": 261,
+      "views": 294,
       "embeddable": true,
       "url": "https://www.youtube.com/watch?v=fuHm0X7tbSQ"
     }
