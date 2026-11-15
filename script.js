@@ -59,11 +59,10 @@ const CONFIG = {
   // Visualizações consultadas em 15/11/2026; atualizar ao incluir novos trabalhos.
   projects: [
     {
-      "title": "Fizemos a maquiagem da Kika!",
+      "title": "FIZEMOS A MAQUIAGEM DA KIKA!",
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=fAV0r9yumKs",
       "thumbnail": "",
       "vertical": false,
@@ -78,7 +77,6 @@ const CONFIG = {
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=fMrR6aI4x40",
       "thumbnail": "",
       "vertical": false,
@@ -89,11 +87,10 @@ const CONFIG = {
       "views": 6124
     },
     {
-      "title": "Casa Clutch",
+      "title": "ELE NUNCA TINHA ANDADO DE SKATE… DEU MUITO ERRADO",
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://youtu.be/lXB8Dn48W6s",
       "thumbnail": "",
       "vertical": false,
@@ -108,7 +105,6 @@ const CONFIG = {
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=lAgpa49zraI",
       "thumbnail": "",
       "vertical": false,
@@ -123,7 +119,6 @@ const CONFIG = {
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=dDlQF7OR0OY",
       "thumbnail": "",
       "vertical": false,
@@ -134,11 +129,10 @@ const CONFIG = {
       "views": 1119
     },
     {
-      "title": "Santana",
+      "title": "O QUE DÁ PRA COMPRAR NA BRAZ COM R$200?",
       "client": "Santana",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://youtu.be/S9YK_6tsb9M",
       "thumbnail": "",
       "vertical": false,
@@ -149,11 +143,10 @@ const CONFIG = {
       "views": 1082
     },
     {
-      "title": "Rex",
+      "title": "ESPECIAL COM REX: DA MENINGITE AO SKATE, A HISTÓRIA DE SUPERAÇÃO DE AMORINHA",
       "client": "Rex",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://youtu.be/ANrPaqlfLFg",
       "thumbnail": "",
       "vertical": false,
@@ -168,7 +161,6 @@ const CONFIG = {
       "client": "Santana",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=XeOziSjtG4A",
       "thumbnail": "",
       "vertical": false,
@@ -183,7 +175,6 @@ const CONFIG = {
       "client": "Casa Clutch",
       "category": "YouTube",
       "year": "2026",
-      "editType": "Edição de vídeo",
       "video": "https://www.youtube.com/watch?v=fuHm0X7tbSQ",
       "thumbnail": "",
       "vertical": false,
@@ -229,7 +220,50 @@ document.querySelectorAll("[data-link]").forEach((a) => {
 
 // hero + showreel
 const first = CONFIG.projects[0];
-$("#heroImg").src = thumbOf(first) || ph("Cena de um projeto");
+const heroImage = $("#heroImg");
+heroImage.src = thumbOf(first) || ph("Cena de um projeto");
+heroImage.alt = first ? first.title + " — " + first.client : "Cena de um trabalho editado";
+// Alternância das capas: pausa fora da tela, em abas inativas ou por preferência.
+const heroMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const heroPause = $("#heroPause");
+let heroIndex = 0, heroTimer, heroPaused = false, heroVisible = true, heroGeneration = 0;
+function scheduleHero() {
+  clearTimeout(heroTimer);
+  heroGeneration++;
+  heroPause.hidden = heroMotion.matches || CONFIG.projects.length < 2;
+  heroPause.textContent = heroPaused ? "Retomar capas ▶" : "Pausar capas Ⅱ";
+  heroPause.setAttribute("aria-label", heroPaused ? "Retomar alternância das capas" : "Pausar alternância das capas");
+  if (heroPaused || !heroVisible || document.hidden || heroMotion.matches || CONFIG.projects.length < 2) return;
+  heroTimer = setTimeout(rotateHero, 6000);
+}
+async function rotateHero() {
+  const generation = heroGeneration;
+  const nextIndex = (heroIndex + 1) % CONFIG.projects.length;
+  const project = CONFIG.projects[nextIndex];
+  const preload = new Image();
+  preload.src = thumbOf(project);
+  try { await preload.decode(); }
+  catch {
+    preload.src = preload.src.replace("/maxresdefault.jpg", "/hqdefault.jpg");
+    try { await preload.decode(); } catch { heroIndex = nextIndex; scheduleHero(); return; }
+  }
+  if (generation !== heroGeneration) return;
+  heroIndex = nextIndex;
+  heroImage.src = preload.src;
+  heroImage.alt = project.title + " — " + project.client;
+  heroImage.animate?.([{opacity:.25}, {opacity:1}], {duration:550, easing:"ease-out"});
+  scheduleHero();
+}
+heroPause.addEventListener("click", () => { heroPaused = !heroPaused; scheduleHero(); });
+document.addEventListener("visibilitychange", scheduleHero);
+heroMotion.addEventListener("change", scheduleHero);
+if ("IntersectionObserver" in window) {
+  const heroObserver = new IntersectionObserver(entries => {
+    heroVisible = entries[0].isIntersecting; scheduleHero();
+  });
+  heroObserver.observe(heroImage);
+}
+scheduleHero();
 const sr = CONFIG.showreel;
 $(".showreel").hidden = !sr.video;
 $("#srImg").src = thumbOf(sr) || ph("Seleção de vídeos");
@@ -250,7 +284,7 @@ CONFIG.projects.forEach((p, i) => {
     <div class="thumb ${p.vertical ? "v" : ""}"><img src="${thumbOf(p) || ph("Capa · " + p.title)}" alt="Capa do projeto ${p.title}" loading="lazy">
       <span class="card-play" aria-hidden="true">▶</span><div class="ov"><span>${p.category}</span><span>Assistir ao vídeo ↗</span></div></div>
     <div class="meta"><h3>${p.title}</h3><span>${p.year}</span></div>
-    <p class="muted">${p.category} · ${p.editType}</p></button>`;
+    <p class="muted">${p.client}</p></button>`;
   grid.appendChild(card);
 });
 
