@@ -233,7 +233,7 @@ function scheduleHero() {
   heroPause.textContent = heroPaused ? "Retomar capas ▶" : "Pausar capas Ⅱ";
   heroPause.setAttribute("aria-label", heroPaused ? "Retomar alternância das capas" : "Pausar alternância das capas");
   if (heroPaused || !heroVisible || document.hidden || heroMotion.matches || CONFIG.projects.length < 2) return;
-  heroTimer = setTimeout(rotateHero, 6000);
+  heroTimer = setTimeout(rotateHero, 3000);
 }
 async function rotateHero() {
   const generation = heroGeneration;
@@ -250,7 +250,7 @@ async function rotateHero() {
   heroIndex = nextIndex;
   heroImage.src = preload.src;
   heroImage.alt = project.title + " — " + project.client;
-  heroImage.animate?.([{opacity:.25}, {opacity:1}], {duration:550, easing:"ease-out"});
+  heroImage.animate?.([{opacity:.25}, {opacity:1}], {duration:300, easing:"ease-out"});
   scheduleHero();
 }
 heroPause.addEventListener("click", () => { heroPaused = !heroPaused; scheduleHero(); });
