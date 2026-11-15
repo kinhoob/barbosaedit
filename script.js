@@ -56,23 +56,143 @@ const CONFIG = {
   // Adicione os arquivos ao repositório e informe seus caminhos relativos em src.
   // As capas automáticas do YouTube não são apresentadas como criações autorais.
   thumbnails: [],
+  // Visualizações consultadas em 15/11/2026; atualizar ao incluir novos trabalhos.
   projects: [
-    { title: "Casa Clutch", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
-      video: "https://youtu.be/lXB8Dn48W6s", thumbnail: "", vertical: false,
-      description: "Vídeo editado para Casa Clutch.",
-      services: ["Edição de vídeo"] },
-    { title: "Santana", client: "Santana", category: "YouTube", year: "2026", editType: "Edição de vídeo",
-      video: "https://youtu.be/S9YK_6tsb9M", thumbnail: "", vertical: false,
-      description: "Vídeo editado para Santana.",
-      services: ["Edição de vídeo"] },
-    { title: "Rex", client: "Rex", category: "YouTube", year: "2026", editType: "Edição de vídeo",
-      video: "https://youtu.be/ANrPaqlfLFg", thumbnail: "", vertical: false,
-      description: "Vídeo editado para Rex. Assista ao vídeo completo para conhecer o resultado.",
-      services: ["Edição de vídeo"] },
-    { title: "Fizemos a maquiagem da Kika!", client: "Casa Clutch", category: "YouTube", year: "2026", editType: "Edição de vídeo",
-      video: "https://www.youtube.com/watch?v=fAV0r9yumKs", thumbnail: "", vertical: false,
-      description: "Vídeo editado para Casa Clutch.",
-      services: ["Edição de vídeo"] },
+    {
+      "title": "Fizemos a maquiagem da Kika!",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=fAV0r9yumKs",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 6423
+    },
+    {
+      "title": "UM CEGO, UM SURDO E UM MUDO FAZENDO PASTEL",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=fMrR6aI4x40",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 6124
+    },
+    {
+      "title": "Casa Clutch",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://youtu.be/lXB8Dn48W6s",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 2391
+    },
+    {
+      "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=lAgpa49zraI",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 2276
+    },
+    {
+      "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=dDlQF7OR0OY",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 1119
+    },
+    {
+      "title": "Santana",
+      "client": "Santana",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://youtu.be/S9YK_6tsb9M",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Santana.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 1082
+    },
+    {
+      "title": "Rex",
+      "client": "Rex",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://youtu.be/ANrPaqlfLFg",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Rex. Assista ao vídeo completo para conhecer o resultado.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 537
+    },
+    {
+      "title": "15 MINUTOS PRA MONTAR UM FIT NA DECATHLON",
+      "client": "Santana",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=XeOziSjtG4A",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Santana.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 465
+    },
+    {
+      "title": "PERDER NA SINUCA NUNCA DOEU TANTO! #SINUCACHALLENGE",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "editType": "Edição de vídeo",
+      "video": "https://www.youtube.com/watch?v=fuHm0X7tbSQ",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 261
+    }
   ],
 };
 
