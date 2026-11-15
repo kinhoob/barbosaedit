@@ -101,34 +101,6 @@ const CONFIG = {
       "views": 2391
     },
     {
-      "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
-      "client": "Casa Clutch",
-      "category": "YouTube",
-      "year": "2026",
-      "video": "https://www.youtube.com/watch?v=lAgpa49zraI",
-      "thumbnail": "",
-      "vertical": false,
-      "description": "Vídeo editado para Casa Clutch.",
-      "services": [
-        "Edição de vídeo"
-      ],
-      "views": 2276
-    },
-    {
-      "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
-      "client": "Casa Clutch",
-      "category": "YouTube",
-      "year": "2026",
-      "video": "https://www.youtube.com/watch?v=dDlQF7OR0OY",
-      "thumbnail": "",
-      "vertical": false,
-      "description": "Vídeo editado para Casa Clutch.",
-      "services": [
-        "Edição de vídeo"
-      ],
-      "views": 1119
-    },
-    {
       "title": "O QUE DÁ PRA COMPRAR NA BRAZ COM R$200?",
       "client": "Santana",
       "category": "YouTube",
@@ -155,6 +127,34 @@ const CONFIG = {
         "Edição de vídeo"
       ],
       "views": 537
+    },
+    {
+      "title": "A NOITE DO PASTEL SAIU DO CONTROLE!",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "video": "https://www.youtube.com/watch?v=lAgpa49zraI",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 2276
+    },
+    {
+      "title": "O SANTANA SE MACHUCOU JOGANDO FUTEBOL!",
+      "client": "Casa Clutch",
+      "category": "YouTube",
+      "year": "2026",
+      "video": "https://www.youtube.com/watch?v=dDlQF7OR0OY",
+      "thumbnail": "",
+      "vertical": false,
+      "description": "Vídeo editado para Casa Clutch.",
+      "services": [
+        "Edição de vídeo"
+      ],
+      "views": 1119
     },
     {
       "title": "15 MINUTOS PRA MONTAR UM FIT NA DECATHLON",
@@ -184,8 +184,7 @@ const CONFIG = {
       ],
       "views": 261
     }
-  ],
-};
+  ],};
 
 /* ================= código ================= */
 const $ = (s, el = document) => el.querySelector(s);
